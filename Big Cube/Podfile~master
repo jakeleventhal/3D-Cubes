@@ -1,11 +1,15 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
-target 'Layered Cube' do
+target 'Big Cube' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
+<<<<<<< master:Big Cube/Podfile
+  # Pods for Big Cube
+=======
   # Pods for Layered Cube
+>>>>>>> Added Big Cube project:Layered Cube/Podfile
   pod 'Firebase/Core'
   pod 'Firebase/Database'
 

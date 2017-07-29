@@ -13,17 +13,22 @@ import FirebaseDatabase
 
 class GameViewController: UIViewController {
 	
+	// Configuration
+	var cubiesPerFace:Double = 100
+	
 	var ref:DatabaseReference?
 	var databaseHandle:DatabaseHandle?
 	var scene:SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
-	var faces:Dictionary<String,Int> = [String: Int]()
-	var nodeFaces = [SCNNode]()
+	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		// Set the Firebase reference
+		// set the Firebase reference
 		ref = Database.database().reference()
+		
+		// add new data to the database (TEMPORARY CALL TO FUNCTION)
+		//resetCube()
 		
 		// create and add a camera to the scene
 		let cameraNode = SCNNode()
@@ -57,45 +62,37 @@ class GameViewController: UIViewController {
 		cubeNode.name = "base"
 		scene.rootNode.addChildNode(cubeNode)
 		
-		// create the dictionary to store face values
-		var faces = [String: Int]()
-		
 		// add the faces to the cube
 		initializeFaces()
 		
-		// retrieve the posts
-		databaseHandle = ref?.child("faces").observe(.childAdded, with: {(snapshot) in
+		// retrieve the cubies
+		databaseHandle = ref?.child("deleted").observe(.childAdded, with: {(snapshot) in
 			let key = snapshot.key
-			let value = snapshot.value as? Int
 			
-			faces[key] = value
-			
-			if value == 0 {
-				if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
-					self.deleteNode(node: nodeToDelete)
-					self.nodeFaces = self.nodeFaces.filter {$0 != nodeToDelete}
-					if self.nodeFaces.count == 0 {
-						self.resetCube()
-					}
+			if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
+				if self.scene.rootNode.childNodes.count == 4 {
+					self.resetCube()
+				}
+				else {
+					nodeToDelete.removeFromParentNode()
 				}
 			}
 		})
 		
 		// listen for updates
-		databaseHandle = ref?.child("faces").observe(.childChanged, with: {(snapshot) in
+		databaseHandle = ref?.child("remaining").observe(.childRemoved, with: {(snapshot) in
 			// Code to execute when a child is added under "faces"
 			
 			// Retrieve the post
 			let key = snapshot.key
-			let value = snapshot.value as? Int
 			
-			if value == 0 {
-				if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
-					self.deleteNode(node: nodeToDelete)
-					self.nodeFaces = self.nodeFaces.filter {$0 != nodeToDelete}
-					if self.nodeFaces.count == 0 {
-						self.resetCube()
-					}
+			
+			if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
+				if self.scene.rootNode.childNodes.count == 5 {
+					self.resetCube()
+				}
+				else {
+					nodeToDelete.removeFromParentNode()
 				}
 			}
 		})
@@ -121,77 +118,97 @@ class GameViewController: UIViewController {
 	}
 	
 	func initializeFaces() {
-		addTopFace()
-		addBottomFace()
-		addFrontFace()
-		addBackFace()
-		addLeftFace()
-		addRightFace()
+		let cubiesPerRow = Int(sqrt(cubiesPerFace))-1
+		addTopCubies(size: cubiesPerRow)
+		addBottomCubies(size: cubiesPerRow)
+		addFrontCubies(size: cubiesPerRow)
+		addBackCubies(size: cubiesPerRow)
+		addLeftCubies(size: cubiesPerRow)
+		addRightCubies(size: cubiesPerRow)
 	}
 	
-	func addTopFace() {
-		// add the top face
-		let topFace = SCNBox(width: 10, height: 1, length: 10, chamferRadius: 0.0)
-		let topFaceNode = SCNNode(geometry: topFace)
-		topFaceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-		topFaceNode.position = SCNVector3(x: 0, y: 5.6, z: 0)
-		topFaceNode.name = "top"
-		scene.rootNode.addChildNode(topFaceNode)
-		nodeFaces.append(topFaceNode)
+	// add cubies to the top face
+	func addTopCubies(size: Int) {
+		for i in 0...size {
+			for j in 0...size {
+				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
+				let cubieNode = SCNNode(geometry: cubie)
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 5.6, z: 4.5 - Float(j))
+				cubieNode.name = "top " + String(i) + ", " + String(j)
+				scene.rootNode.addChildNode(cubieNode)
+			}
+		}
 	}
 	
-	func addBottomFace() {
-		let bottomFace = SCNBox(width: 10, height: 1, length: 10, chamferRadius: 0.0)
-		let bottomFaceNode = SCNNode(geometry: bottomFace)
-		bottomFaceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-		bottomFaceNode.position = SCNVector3(x: 0, y: -5.6, z: 0)
-		bottomFaceNode.name = "bottom"
-		scene.rootNode.addChildNode(bottomFaceNode)
-		nodeFaces.append(bottomFaceNode)
+	// add cubies to the bottom face
+	func addBottomCubies(size: Int) {
+		for i in 0...size {
+			for j in 0...size {
+				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
+				let cubieNode = SCNNode(geometry: cubie)
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: -5.6, z: 4.5 - Float(j))
+				cubieNode.name = "bottom " + String(i) + ", " + String(j)
+				scene.rootNode.addChildNode(cubieNode)
+			}
+		}
 	}
 	
-	func addFrontFace() {
-		// add the front face
-		let frontFace = SCNBox(width: 10, height: 10, length: 1, chamferRadius: 0.0)
-		let frontFaceNode = SCNNode(geometry: frontFace)
-		frontFaceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-		frontFaceNode.position = SCNVector3(x: 0, y: 0, z: 5.6)
-		frontFaceNode.name = "front"
-		scene.rootNode.addChildNode(frontFaceNode)
-		nodeFaces.append(frontFaceNode)
+	// add cubies to the front face
+	func addFrontCubies(size: Int) {
+		for i in 0...size {
+			for j in 0...size {
+				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
+				let cubieNode = SCNNode(geometry: cubie)
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: 5.6)
+				cubieNode.name = "front " + String(i) + ", " + String(j)
+				scene.rootNode.addChildNode(cubieNode)
+			}
+		}
 	}
 	
-	func addBackFace() {
-		// add the back face
-		let backFace = SCNBox(width: 10, height: 10, length: 1, chamferRadius: 0.0)
-		let backFaceNode = SCNNode(geometry: backFace)
-		backFaceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-		backFaceNode.position = SCNVector3(x: 0, y: 0, z: -5.6)
-		backFaceNode.name = "back"
-		scene.rootNode.addChildNode(backFaceNode)
-		nodeFaces.append(backFaceNode)
+	// add cubies to the back face
+	func addBackCubies(size: Int) {
+		for i in 0...size {
+			for j in 0...size {
+				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
+				let cubieNode = SCNNode(geometry: cubie)
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: -5.6)
+				cubieNode.name = "back " + String(i) + ", " + String(j)
+				scene.rootNode.addChildNode(cubieNode)
+			}
+		}
 	}
 	
-	func addLeftFace() {
-		// add the left face
-		let leftFace = SCNBox(width: 1, height: 10, length: 10, chamferRadius: 0.0)
-		let leftFaceNode = SCNNode(geometry: leftFace)
-		leftFaceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-		leftFaceNode.position = SCNVector3(x: -5.6, y: 0, z: 0)
-		leftFaceNode.name = "left"
-		scene.rootNode.addChildNode(leftFaceNode)
-		nodeFaces.append(leftFaceNode)
+	// add cubies to the left face
+	func addLeftCubies(size: Int) {
+		for i in 0...size {
+			for j in 0...size {
+				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
+				let cubieNode = SCNNode(geometry: cubie)
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.position = SCNVector3(x: -5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
+				cubieNode.name = "left " + String(i) + ", " + String(j)
+				scene.rootNode.addChildNode(cubieNode)
+			}
+		}
 	}
 	
-	func addRightFace() {
-		// add the right face
-		let rightFace = SCNBox(width: 1, height: 10, length: 10, chamferRadius: 0.0)
-		let rightFaceNode = SCNNode(geometry: rightFace)
-		rightFaceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-		rightFaceNode.position = SCNVector3(x: 5.6, y: 0, z: 0)
-		rightFaceNode.name = "right"
-		scene.rootNode.addChildNode(rightFaceNode)
-		nodeFaces.append(rightFaceNode)
+	// add cubies to the right face
+	func addRightCubies(size: Int) {
+		for i in 0...size {
+			for j in 0...size {
+				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
+				let cubieNode = SCNNode(geometry: cubie)
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.position = SCNVector3(x: 5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
+				cubieNode.name = "right " + String(i) + ", " + String(j)
+				scene.rootNode.addChildNode(cubieNode)
+			}
+		}
 	}
 	
 	override var prefersStatusBarHidden: Bool {
@@ -211,24 +228,38 @@ class GameViewController: UIViewController {
 		// Release any cached data, images, etc that aren't in use.
 	}
 	
-	func deleteNode(node: SCNNode) {
-		node.removeFromParentNode()
-	}
-	
 	func resetCube() {
+		// highlight the cube
+		if let material = scene.rootNode.childNode(withName: "base", recursively: true)?.geometry?.firstMaterial {
+			// highlight it
+			SCNTransaction.begin()
+			SCNTransaction.animationDuration = 0.5
+			
+			// on completion - unhighlight
+			SCNTransaction.completionBlock = {
+				SCNTransaction.begin()
+				SCNTransaction.animationDuration = 0.5
+				
+				material.emission.contents = UIColor.black
+				
+				SCNTransaction.commit()
+			}
+			
+			material.emission.contents = UIColor.white
+			
+			SCNTransaction.commit()
+		}
+		
 		self.initializeFaces()
-		faces["top"] = 1
-		self.ref?.child("faces").child("top").setValue(1)
-		faces["bottom"] = 1
-		self.ref?.child("faces").child("bottom").setValue(1)
-		faces["front"] = 1
-		self.ref?.child("faces").child("front").setValue(1)
-		faces["back"] = 1
-		self.ref?.child("faces").child("back").setValue(1)
-		faces["left"] = 1
-		self.ref?.child("faces").child("left").setValue(1)
-		faces["right"] = 1
-		self.ref?.child("faces").child("right").setValue(1)
+		let cubiesPerRow = Int(sqrt(cubiesPerFace))-1
+		for face in faceNames {
+			for i in 0...cubiesPerRow {
+				for j in 0...cubiesPerRow {
+					ref?.child("remaining").child(face + " " + String(i) + ", " + String(j)).setValue(1)
+				}
+			}
+		}
+		self.ref?.child("deleted").removeValue()
 	}
 	
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -246,22 +277,22 @@ class GameViewController: UIViewController {
 			let result: AnyObject = hitResults[0]
 			
 			// deleting the face and posting to Firebase
-			ref?.child("faces/" + result.node.name!).observeSingleEvent(of: .value, with: {(snapshot) in
+			ref?.child("remaining/" + result.node.name!).observeSingleEvent(of: .value, with: {(snapshot) in
 				
-				// Retrieve the post
+				// retrieve the key
 				let key = snapshot.key
-				let value = snapshot.value as? Int
 				
-				if value == 1 {
-					self.ref?.child("faces").child(result.node.name!).setValue(0)
-					if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
-						self.nodeFaces = self.nodeFaces.filter {$0 != nodeToDelete}
-						if self.nodeFaces.count == 0 {
-							self.resetCube()
-						}
-						else {
-							self.deleteNode(node: nodeToDelete)
-						}
+				
+				self.ref?.child("remaining").child(result.node.name!).removeValue()
+				self.ref?.child("deleted").child(result.node.name!).setValue(1)
+				if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
+					print(self.scene.rootNode.childNodes)
+					print(self.scene.rootNode.childNodes.count)
+					if self.scene.rootNode.childNodes.count == 5 {
+						self.resetCube()
+					}
+					else {
+						nodeToDelete.removeFromParentNode()
 					}
 				}
 			})
