@@ -1,0 +1,6 @@
+framework module Pods_Layered_Cube {
+  umbrella header "Pods-Layered Cube-umbrella.h"
+
+  export *
+  module * { export * }
+}

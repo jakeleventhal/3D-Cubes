@@ -1,0 +1,6 @@
+framework module Pods_Big_Cube {
+  umbrella header "Pods-Big Cube-umbrella.h"
+
+  export *
+  module * { export * }
+}
