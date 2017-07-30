@@ -243,23 +243,22 @@ class GameViewController: UIViewController {
 				material.emission.contents = UIColor.black
 				
 				SCNTransaction.commit()
+				self.initializeFaces()
+				let cubiesPerRow = Int(sqrt(self.cubiesPerFace))-1
+				for face in self.faceNames {
+					for i in 0...cubiesPerRow {
+						for j in 0...cubiesPerRow {
+							self.ref?.child("remaining").child(face + " " + String(i) + ", " + String(j)).setValue(1)
+						}
+					}
+				}
+				self.ref?.child("deleted").removeValue()
 			}
 			
 			material.emission.contents = UIColor.white
 			
 			SCNTransaction.commit()
 		}
-		
-		self.initializeFaces()
-		let cubiesPerRow = Int(sqrt(cubiesPerFace))-1
-		for face in faceNames {
-			for i in 0...cubiesPerRow {
-				for j in 0...cubiesPerRow {
-					ref?.child("remaining").child(face + " " + String(i) + ", " + String(j)).setValue(1)
-				}
-			}
-		}
-		self.ref?.child("deleted").removeValue()
 	}
 	
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -286,8 +285,6 @@ class GameViewController: UIViewController {
 				self.ref?.child("remaining").child(result.node.name!).removeValue()
 				self.ref?.child("deleted").child(result.node.name!).setValue(1)
 				if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
-					print(self.scene.rootNode.childNodes)
-					print(self.scene.rootNode.childNodes.count)
 					if self.scene.rootNode.childNodes.count == 5 {
 						self.resetCube()
 					}
