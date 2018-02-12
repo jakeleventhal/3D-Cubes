@@ -133,7 +133,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 5.6, z: 4.5 - Float(j))
 				cubieNode.name = "top " + String(i) + ", " + String(j)
 				scene.rootNode.addChildNode(cubieNode)
@@ -147,7 +147,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: -5.6, z: 4.5 - Float(j))
 				cubieNode.name = "bottom " + String(i) + ", " + String(j)
 				scene.rootNode.addChildNode(cubieNode)
@@ -161,7 +161,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: 5.6)
 				cubieNode.name = "front " + String(i) + ", " + String(j)
 				scene.rootNode.addChildNode(cubieNode)
@@ -175,7 +175,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: -5.6)
 				cubieNode.name = "back " + String(i) + ", " + String(j)
 				scene.rootNode.addChildNode(cubieNode)
@@ -189,7 +189,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: -5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
 				cubieNode.name = "left " + String(i) + ", " + String(j)
 				scene.rootNode.addChildNode(cubieNode)
@@ -203,7 +203,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
 				cubieNode.name = "right " + String(i) + ", " + String(j)
 				scene.rootNode.addChildNode(cubieNode)
@@ -226,6 +226,11 @@ class GameViewController: UIViewController {
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Release any cached data, images, etc that aren't in use.
+	}
+	
+	func getRandomShadeOfBlue() -> UIColor {
+		let randomBlueValue = CGFloat(arc4random()) / CGFloat(UINT32_MAX) * abs(0.87 - 1) + min(0.87, 1)
+		return UIColor(red: 0, green: 0, blue: randomBlueValue, alpha: 1)
 	}
 	
 	func resetCube() {
@@ -261,6 +266,20 @@ class GameViewController: UIViewController {
 		}
 	}
 	
+	func createExplosion(geometry: SCNGeometry, position: SCNVector3, rotation: SCNVector4) {
+		let explosion = SCNParticleSystem(named: "BokehParticle.scnp", inDirectory: nil)!
+		explosion.emitterShape = geometry
+		explosion.birthLocation = .surface
+		
+		let rotationMatrix = SCNMatrix4MakeRotation(rotation.w, rotation.x, rotation.y, rotation.z)
+		
+		let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y, position.z)
+		
+		let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
+		
+		scene.addParticleSystem(explosion, transform: transformMatrix)
+	}
+	
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
 		// retrieve the SCNView
 		let scnView = self.view as! SCNView
@@ -289,6 +308,10 @@ class GameViewController: UIViewController {
 						self.resetCube()
 					}
 					else {
+						self.createExplosion(geometry: nodeToDelete.geometry!,
+											 position: nodeToDelete.presentation.position,
+											 rotation: nodeToDelete.presentation.rotation)
+						
 						nodeToDelete.removeFromParentNode()
 					}
 				}
