@@ -24,6 +24,17 @@ class GameViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		// set the background of the scene
+		scene.background.contents =
+			[
+				UIImage(named: "space.jpg") as UIImage!,
+				UIImage(named: "space.jpg") as UIImage!,
+				UIImage(named: "space.jpg") as UIImage!,
+				UIImage(named: "space.jpg") as UIImage!,
+				UIImage(named: "space.jpg") as UIImage!,
+				UIImage(named: "space.jpg") as UIImage!
+			]
+		
 		// set the Firebase reference
 		ref = Database.database().reference()
 		
@@ -92,6 +103,10 @@ class GameViewController: UIViewController {
 					self.resetCube()
 				}
 				else {
+					self.createExplosion(geometry: nodeToDelete.geometry!,
+										 position: nodeToDelete.presentation.position,
+										 rotation: nodeToDelete.presentation.rotation)
+					
 					nodeToDelete.removeFromParentNode()
 				}
 			}
@@ -229,7 +244,11 @@ class GameViewController: UIViewController {
 	}
 	
 	func getRandomShadeOfBlue() -> UIColor {
-		let randomBlueValue = CGFloat(arc4random()) / CGFloat(UINT32_MAX) * abs(0.87 - 1) + min(0.87, 1)
+		let rand = CGFloat(arc4random())
+		let max = CGFloat(UINT32_MAX)
+		let diff = CGFloat(abs(0.86 - 1))
+		
+		let randomBlueValue = rand / max * diff + 0.86
 		return UIColor(red: 0, green: 0, blue: randomBlueValue, alpha: 1)
 	}
 	
@@ -280,7 +299,7 @@ class GameViewController: UIViewController {
 		scene.addParticleSystem(explosion, transform: transformMatrix)
 	}
 	
-	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
+	@objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
 		// retrieve the SCNView
 		let scnView = self.view as! SCNView
 		
