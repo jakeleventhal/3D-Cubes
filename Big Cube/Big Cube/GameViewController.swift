@@ -12,13 +12,15 @@ import SceneKit
 import FirebaseDatabase
 
 class GameViewController: UIViewController {
+	// configuration
+	let cubiesPerFace: Double = 100
+	let numWinningTiles = 17
 	
-	// Configuration
-	var cubiesPerFace:Double = 100
-	
-	var ref:DatabaseReference?
+	// set up Firebase variables
+	var ref: DatabaseReference?
 	var databaseHandle:DatabaseHandle?
-	var scene:SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
+	
+	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	
 	override func viewDidLoad() {
@@ -37,9 +39,6 @@ class GameViewController: UIViewController {
 		
 		// set the Firebase reference
 		ref = Database.database().reference()
-		
-		// add new data to the database (TEMPORARY CALL TO FUNCTION)
-		//resetCube()
 		
 		// create and add a camera to the scene
 		let cameraNode = SCNNode()
@@ -82,7 +81,7 @@ class GameViewController: UIViewController {
 			
 			if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
 				if self.scene.rootNode.childNodes.count == 4 {
-					self.resetCube()
+					self.resetCube(doFullReset: false)
 				}
 				else {
 					nodeToDelete.removeFromParentNode()
@@ -97,10 +96,9 @@ class GameViewController: UIViewController {
 			// Retrieve the post
 			let key = snapshot.key
 			
-			
 			if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
 				if self.scene.rootNode.childNodes.count == 5 {
-					self.resetCube()
+					self.resetCube(doFullReset: false)
 				}
 				else {
 					self.createExplosion(geometry: nodeToDelete.geometry!,
@@ -130,6 +128,16 @@ class GameViewController: UIViewController {
 		// add a tap gesture recognizer
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
 		scnView.addGestureRecognizer(tapGesture)
+		
+		// add a double tap gesture recognizer (to make sure double tap acts as normal tap)
+		let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+		doubleTapGesture.numberOfTapsRequired = 2
+		scnView.addGestureRecognizer(doubleTapGesture)
+		
+		// add two finer pan gesture recognizer (to make sure nothing happens)
+		let doublePanGesture = UIPanGestureRecognizer(target: self, action: nil)
+		doublePanGesture.minimumNumberOfTouches = 2
+		scnView.addGestureRecognizer(doublePanGesture)
 	}
 	
 	func initializeFaces() {
@@ -252,7 +260,7 @@ class GameViewController: UIViewController {
 		return UIColor(red: 0, green: 0, blue: randomBlueValue, alpha: 1)
 	}
 	
-	func resetCube() {
+	func resetCube(doFullReset: Bool) {
 		// highlight the cube
 		if let material = scene.rootNode.childNode(withName: "base", recursively: true)?.geometry?.firstMaterial {
 			// highlight it
@@ -269,19 +277,53 @@ class GameViewController: UIViewController {
 				SCNTransaction.commit()
 				self.initializeFaces()
 				let cubiesPerRow = Int(sqrt(self.cubiesPerFace))-1
+				
+				var cubieNames: [String] = []
+				
+				// add the cubies to the database
 				for face in self.faceNames {
 					for i in 0...cubiesPerRow {
 						for j in 0...cubiesPerRow {
-							self.ref?.child("remaining").child(face + " " + String(i) + ", " + String(j)).setValue(1)
+							let cubieName = face + " " + String(i) + ", " + String(j)
+							// add each cubie name to the list of all names
+							cubieNames.append(cubieName)
+							if (doFullReset) {
+								self.ref?.child("remaining").child(cubieName).setValue(0)
+							}
 						}
 					}
 				}
 				self.ref?.child("deleted").removeValue()
+				
+				// if scatter should occur
+				if (doFullReset) {
+					self.scatterWinningTiles(cubieNames: cubieNames)
+				}
 			}
 			
 			material.emission.contents = UIColor.white
 			
 			SCNTransaction.commit()
+		}
+		
+	}
+	
+	// scatter winning tiles throughout the cube
+	func scatterWinningTiles(cubieNames: [String]) {
+		var cubieNames = cubieNames
+		// for each winning tile to place
+		for _ in 1...numWinningTiles {
+			// get random index of cubie name
+			let randomIndex = Int(arc4random_uniform(UInt32(cubieNames.count)))
+			
+			// get the winner name
+			let winnerName = cubieNames[randomIndex]
+			
+			// update the cash value for that tile
+			self.ref?.child("remaining").child(winnerName).setValue(1)
+			
+			// remove the winner from the list of all names
+			cubieNames.remove(at: randomIndex)
 		}
 	}
 	
@@ -300,41 +342,63 @@ class GameViewController: UIViewController {
 	}
 	
 	@objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
-		// retrieve the SCNView
-		let scnView = self.view as! SCNView
-		
-		// check what nodes are tapped
-		let p = gestureRecognize.location(in: scnView)
-		
-		let hitResults = scnView.hitTest(p, options: [:])
-		// check that user clicked on at least one object
-		if hitResults.count > 0 && hitResults[0].node.name != "base" {
+		DispatchQueue.global(qos: .userInitiated).async {
+			// retrieve the SCNView
+			let scnView = self.view as! SCNView
 			
-			// retrieved the first clicked object
-			let result: AnyObject = hitResults[0]
+			// check what nodes are tapped
+			let p = gestureRecognize.location(in: scnView)
 			
-			// deleting the face and posting to Firebase
-			ref?.child("remaining/" + result.node.name!).observeSingleEvent(of: .value, with: {(snapshot) in
+			let hitResults = scnView.hitTest(p, options: [:])
+			// check that user clicked on at least one object
+			if hitResults.count > 0 && hitResults[0].node.name != "base" {
 				
-				// retrieve the key
-				let key = snapshot.key
+				// retrieved the first clicked object
+				let result: AnyObject = hitResults[0]
 				
-				
-				self.ref?.child("remaining").child(result.node.name!).removeValue()
-				self.ref?.child("deleted").child(result.node.name!).setValue(1)
-				if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
-					if self.scene.rootNode.childNodes.count == 5 {
-						self.resetCube()
-					}
-					else {
-						self.createExplosion(geometry: nodeToDelete.geometry!,
-											 position: nodeToDelete.presentation.position,
-											 rotation: nodeToDelete.presentation.rotation)
+				// deleting the face and posting to Firebase
+				self.ref?.child("remaining/" + result.node.name!).observeSingleEvent(of: .value, with: {(snapshot) in
+					
+					// retrieve the key
+					let key = snapshot.key
+					
+					// retreive the cash value
+					let cashVal = (snapshot.value as? Double)!
+					
+					// display an alert if a user wins
+					if (cashVal > 0) {
+						let cashString = String(format: "$%.02f", cashVal)
 						
-						nodeToDelete.removeFromParentNode()
+						
+						let winAlert = UIAlertController(title: "Winner!",
+														 message: "You won \(cashString)!",
+														 preferredStyle: UIAlertControllerStyle(rawValue: 1)!)
+						
+						// add the dismissbutton to the win alert
+						winAlert.addAction(UIAlertAction(title: "Dismiss", style: .default) { (action:UIAlertAction!) in
+						})
+						
+						self.show(winAlert, sender: self)
 					}
-				}
-			})
+					
+					self.ref?.child("remaining").child(result.node.name!).removeValue()
+					self.ref?.child("deleted").child(result.node.name!).setValue(cashVal)
+					if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
+						// if cube needs to be reset
+						if self.scene.rootNode.childNodes.count == 5 {
+							self.resetCube(doFullReset: true)
+						}
+						else {
+							self.createExplosion(geometry: nodeToDelete.geometry!,
+												 position: nodeToDelete.presentation.position,
+												 rotation: nodeToDelete.presentation.rotation)
+							
+							nodeToDelete.removeFromParentNode()
+						}
+					}
+				})
+			}
 		}
+		
 	}
 }
