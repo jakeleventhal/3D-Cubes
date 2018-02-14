@@ -43,6 +43,7 @@ class GameViewController: UIViewController {
 		// create and add a camera to the scene
 		let cameraNode = SCNNode()
 		cameraNode.camera = SCNCamera()
+		cameraNode.name = "camera"
 		scene.rootNode.addChildNode(cameraNode)
 		
 		// place the camera
@@ -54,6 +55,7 @@ class GameViewController: UIViewController {
 		lightNode1.light!.type = .omni
 		lightNode1.light!.intensity = 1750
 		lightNode1.position = SCNVector3(x: 10, y: 10, z: 10)
+		lightNode1.name = "lightNode1"
 		scene.rootNode.addChildNode(lightNode1)
 		
 		// create and add a light to the bottom of the scene
@@ -62,6 +64,7 @@ class GameViewController: UIViewController {
 		lightNode2.light!.type = .omni
 		lightNode2.light!.intensity = 1750
 		lightNode2.position = SCNVector3(x: -10, y: -10, z: -10)
+		lightNode2.name = "lightNode2"
 		scene.rootNode.addChildNode(lightNode2)
 		
 		// create the base cube
@@ -138,6 +141,28 @@ class GameViewController: UIViewController {
 		let doublePanGesture = UIPanGestureRecognizer(target: self, action: nil)
 		doublePanGesture.minimumNumberOfTouches = 2
 		scnView.addGestureRecognizer(doublePanGesture)
+	}
+	
+	// delete all cubies but one
+	func deleteAllButOne() {
+		var allNodes = scene.rootNode.childNodes
+		// don't touch the camera, lights, or base cube
+		allNodes = allNodes.filter { $0.name != "camera" }
+		allNodes = allNodes.filter { $0.name != "lightNode1" }
+		allNodes = allNodes.filter { $0.name != "lightNode2" }
+		allNodes = allNodes.filter { $0.name != "base" }
+		
+		// don't touch the one remaining cubie
+		allNodes.removeFirst()
+		
+		// delete all other cubies
+		for nodeToDelete in allNodes {
+			self.createExplosion(geometry: nodeToDelete.geometry!,
+								 position: nodeToDelete.presentation.position,
+								 rotation: nodeToDelete.presentation.rotation)
+			
+			nodeToDelete.removeFromParentNode()
+		}
 	}
 	
 	func initializeFaces() {
