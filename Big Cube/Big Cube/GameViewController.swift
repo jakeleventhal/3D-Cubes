@@ -157,10 +157,18 @@ class GameViewController: UIViewController {
 		
 		// delete all other cubies
 		for nodeToDelete in allNodes {
+			// animate the explosion
 			self.createExplosion(geometry: nodeToDelete.geometry!,
 								 position: nodeToDelete.presentation.position,
 								 rotation: nodeToDelete.presentation.rotation)
 			
+			// remove the cubie from the remaining database
+			self.ref?.child("remaining").child(nodeToDelete.name!).removeValue()
+			
+			// add the cubie to the deleted database
+			self.ref?.child("deleted").child(nodeToDelete.name!).setValue("0")
+			
+			// remove the node from the screen
 			nodeToDelete.removeFromParentNode()
 		}
 	}
