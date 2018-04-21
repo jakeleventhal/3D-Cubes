@@ -11,6 +11,12 @@
 		3D12763320319B90003999AF /* bokeh.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D12763120319B90003999AF /* bokeh.png */; };
 		3D12763420319B90003999AF /* BokehParticle.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 3D12763220319B90003999AF /* BokehParticle.scnp */; };
 		3D36C0BD1F2C0922004FD0A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D36C0BC1F2C0922004FD0A6 /* GoogleService-Info.plist */; };
+		3D3CECE2208AD1C70055400F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3CECE1208AD1C70055400F /* LoginViewController.swift */; };
+		3D436FE8208B463400B95E72 /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FE7208B463400B95E72 /* AddFriendView.swift */; };
+		3D436FEA208B464000B95E72 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FE9208B464000B95E72 /* ProfileView.swift */; };
+		3D436FEC208B465700B95E72 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FEB208B465700B95E72 /* MenuView.swift */; };
+		3D436FF0208B46FD00B95E72 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FEF208B46FD00B95E72 /* FriendsView.swift */; };
+		3D436FF2208B470D00B95E72 /* LeaderboardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FF1208B470D00B95E72 /* LeaderboardsView.swift */; };
 		3D9AD5672031AA5A00FEF380 /* space.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D9AD5662031AA5A00FEF380 /* space.jpg */; };
 		3DEA116C1F2C05EB00461804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA116B1F2C05EB00461804 /* AppDelegate.swift */; };
 		3DEA116E1F2C05EB00461804 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DEA116D1F2C05EB00461804 /* art.scnassets */; };
@@ -25,6 +31,13 @@
 		3D12763120319B90003999AF /* bokeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bokeh.png; sourceTree = "<group>"; };
 		3D12763220319B90003999AF /* BokehParticle.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = BokehParticle.scnp; sourceTree = "<group>"; };
 		3D36C0BC1F2C0922004FD0A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3D3CECE1208AD1C70055400F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		3D436FE7208B463400B95E72 /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
+		3D436FE9208B464000B95E72 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		3D436FEB208B465700B95E72 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		3D436FEF208B46FD00B95E72 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		3D436FF1208B470D00B95E72 /* LeaderboardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsView.swift; sourceTree = "<group>"; };
+		3D4DE102208ADF910099CE83 /* Big Cube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Big Cube.entitlements"; sourceTree = "<group>"; };
 		3D9AD5662031AA5A00FEF380 /* space.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = space.jpg; sourceTree = "<group>"; };
 		3DEA11681F2C05EB00461804 /* Big Cube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Big Cube.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DEA116B1F2C05EB00461804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +63,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D436FE6208B461700B95E72 /* TODO */ = {
+			isa = PBXGroup;
+			children = (
+				3D436FE7208B463400B95E72 /* AddFriendView.swift */,
+				3D436FE9208B464000B95E72 /* ProfileView.swift */,
+				3D436FEB208B465700B95E72 /* MenuView.swift */,
+				3D436FEF208B46FD00B95E72 /* FriendsView.swift */,
+				3D436FF1208B470D00B95E72 /* LeaderboardsView.swift */,
+			);
+			path = TODO;
+			sourceTree = "<group>";
+		};
 		3DEA115F1F2C05EB00461804 = {
 			isa = PBXGroup;
 			children = (
@@ -71,11 +96,14 @@
 		3DEA116A1F2C05EB00461804 /* Big Cube */ = {
 			isa = PBXGroup;
 			children = (
+				3D4DE102208ADF910099CE83 /* Big Cube.entitlements */,
+				3D436FE6208B461700B95E72 /* TODO */,
 				3D36C0BC1F2C0922004FD0A6 /* GoogleService-Info.plist */,
 				3DEA116B1F2C05EB00461804 /* AppDelegate.swift */,
 				3DEA116D1F2C05EB00461804 /* art.scnassets */,
 				3DEA116F1F2C05EB00461804 /* GameViewController.swift */,
 				3DEA11711F2C05EB00461804 /* Main.storyboard */,
+				3D3CECE1208AD1C70055400F /* LoginViewController.swift */,
 				3DEA11741F2C05EB00461804 /* Assets.xcassets */,
 				3D9AD5662031AA5A00FEF380 /* space.jpg */,
 				3D12763120319B90003999AF /* bokeh.png */,
@@ -115,7 +143,6 @@
 				3DEA11651F2C05EB00461804 /* Frameworks */,
 				3DEA11661F2C05EB00461804 /* Resources */,
 				FF585DC1A4E56C1F1FB37505 /* [CP] Embed Pods Frameworks */,
-				4258B65BB57195C29F273771 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -133,7 +160,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Jake Leventhal";
 				TargetAttributes = {
 					3DEA11671F2C05EB00461804 = {
@@ -141,6 +168,11 @@
 						DevelopmentTeam = BNKA7GN2H2;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -181,34 +213,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4258B65BB57195C29F273771 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Big Cube/Pods-Big Cube-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B469888E94874DBFE798B4F6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Big Cube-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FF585DC1A4E56C1F1FB37505 /* [CP] Embed Pods Frameworks */ = {
@@ -217,9 +237,26 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Big Cube/Pods-Big Cube-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -233,7 +270,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D3CECE2208AD1C70055400F /* LoginViewController.swift in Sources */,
+				3D436FEC208B465700B95E72 /* MenuView.swift in Sources */,
+				3D436FF0208B46FD00B95E72 /* FriendsView.swift in Sources */,
 				3DEA11701F2C05EB00461804 /* GameViewController.swift in Sources */,
+				3D436FF2208B470D00B95E72 /* LeaderboardsView.swift in Sources */,
+				3D436FEA208B464000B95E72 /* ProfileView.swift in Sources */,
+				3D436FE8208B463400B95E72 /* AddFriendView.swift in Sources */,
 				3DEA116C1F2C05EB00461804 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,6 +317,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -281,6 +325,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -330,6 +375,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -337,6 +383,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -370,12 +417,13 @@
 			baseConfigurationReference = 03AE0BE0DE66F367854B0828 /* Pods-Big Cube.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Big Cube/Big Cube.entitlements";
 				DEVELOPMENT_TEAM = BNKA7GN2H2;
 				INFOPLIST_FILE = "Big Cube/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jakeleventhal.bigcube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -385,12 +433,13 @@
 			baseConfigurationReference = E49B640C2FDC85DE0D9CE37A /* Pods-Big Cube.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Big Cube/Big Cube.entitlements";
 				DEVELOPMENT_TEAM = BNKA7GN2H2;
 				INFOPLIST_FILE = "Big Cube/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jakeleventhal.bigcube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

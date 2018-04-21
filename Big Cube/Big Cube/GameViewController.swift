@@ -29,12 +29,12 @@ class GameViewController: UIViewController {
 		// set the background of the scene
 		scene.background.contents =
 			[
-				UIImage(named: "space.jpg") as UIImage!,
-				UIImage(named: "space.jpg") as UIImage!,
-				UIImage(named: "space.jpg") as UIImage!,
-				UIImage(named: "space.jpg") as UIImage!,
-				UIImage(named: "space.jpg") as UIImage!,
-				UIImage(named: "space.jpg") as UIImage!
+				UIImage(named: "space.jpg") as UIImage?,
+				UIImage(named: "space.jpg") as UIImage?,
+				UIImage(named: "space.jpg") as UIImage?,
+				UIImage(named: "space.jpg") as UIImage?,
+				UIImage(named: "space.jpg") as UIImage?,
+				UIImage(named: "space.jpg") as UIImage?
 			]
 		
 		// set the Firebase reference
