@@ -21,6 +21,7 @@ class GameViewController: UIViewController {
 	var databaseHandle:DatabaseHandle?
 	
 	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
+	var cubeNode: SCNNode!
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	
 	override func viewDidLoad() {
@@ -69,7 +70,7 @@ class GameViewController: UIViewController {
 		
 		// create the base cube
 		let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0.0)
-		let cubeNode = SCNNode(geometry: cube)
+		cubeNode = SCNNode(geometry: cube)
 		cubeNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
 		cubeNode.position = SCNVector3(x: 0, y: 0, z: 0)
 		cubeNode.name = "base"
@@ -78,12 +79,13 @@ class GameViewController: UIViewController {
 		// add the faces to the cube
 		initializeFaces()
 		
+		
 		// retrieve the cubies
 		databaseHandle = ref?.child("deleted").observe(.childAdded, with: {(snapshot) in
 			let key = snapshot.key
 			
-			if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
-				if self.scene.rootNode.childNodes.count == 4 {
+			if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
+				if self.cubeNode.childNodes.count == 1 {
 					self.resetCube(doFullReset: false)
 				}
 				else {
@@ -99,14 +101,14 @@ class GameViewController: UIViewController {
 			// Retrieve the post
 			let key = snapshot.key
 			
-			if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
-				if self.scene.rootNode.childNodes.count == 5 {
+			if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
+				if self.cubeNode.childNodes.count == 1 {
 					self.resetCube(doFullReset: false)
 				}
 				else {
-					self.createExplosion(geometry: nodeToDelete.geometry!,
-										 position: nodeToDelete.presentation.position,
-										 rotation: nodeToDelete.presentation.rotation)
+//					self.createExplosion(geometry: nodeToDelete.geometry!,
+//										 position: nodeToDelete.presentation.position,
+//										 rotation: nodeToDelete.presentation.rotation)
 					
 					nodeToDelete.removeFromParentNode()
 				}
@@ -120,7 +122,7 @@ class GameViewController: UIViewController {
 		scnView.scene = scene
 		
 		// allows the user to manipulate the camera
-		scnView.allowsCameraControl = true
+		// scnView.allowsCameraControl = true
 		
 		// show statistics such as fps and timing information
 		scnView.showsStatistics = true
@@ -132,35 +134,49 @@ class GameViewController: UIViewController {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
 		scnView.addGestureRecognizer(tapGesture)
 		
-		// add a double tap gesture recognizer (to make sure double tap acts as normal tap)
-		let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-		doubleTapGesture.numberOfTapsRequired = 2
-		scnView.addGestureRecognizer(doubleTapGesture)
+		// add a pan gesture recognizer
+		let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+		scnView.addGestureRecognizer(panGesture)
+	}
+	
+	@objc func handlePan(_ gestureRecognize: UIPanGestureRecognizer) {
+		let translation = gestureRecognize.translation(in: gestureRecognize.view)
+		let x = Float(translation.x)
+		let y = Float(-translation.y)
+		let anglePan = sqrt(pow(x,2)+pow(y,2))*(Float)(Double.pi)/180
+		var rotationVector = SCNVector4()
+		rotationVector.x = -y
+		rotationVector.y = x
+		rotationVector.z = 0
+		rotationVector.w = anglePan
+		cubeNode.rotation = rotationVector
 		
-		// add two finer pan gesture recognizer (to make sure nothing happens)
-		let doublePanGesture = UIPanGestureRecognizer(target: self, action: nil)
-		doublePanGesture.minimumNumberOfTouches = 2
-		scnView.addGestureRecognizer(doublePanGesture)
+		cubeNode.transform = SCNMatrix4MakeRotation(anglePan, -y, x, 0)
+		
+		if gestureRecognize.state == UIGestureRecognizerState.ended {
+			let currentPivot = cubeNode.pivot
+			let currentPostion = cubeNode.position
+			let changePivot = SCNMatrix4Invert(SCNMatrix4MakeRotation(cubeNode.rotation.w, cubeNode.rotation.x, cubeNode.rotation.y, cubeNode.rotation.z))
+			
+			cubeNode.pivot = SCNMatrix4Mult(changePivot, currentPivot)
+			cubeNode.transform = SCNMatrix4Identity
+			cubeNode.position = currentPostion
+		}
 	}
 	
 	// delete all cubies but one
 	func deleteAllButOne() {
-		var allNodes = scene.rootNode.childNodes
-		// don't touch the camera, lights, or base cube
-		allNodes = allNodes.filter { $0.name != "camera" }
-		allNodes = allNodes.filter { $0.name != "lightNode1" }
-		allNodes = allNodes.filter { $0.name != "lightNode2" }
-		allNodes = allNodes.filter { $0.name != "base" }
+		var cubieNodes = cubeNode.childNodes
 		
 		// don't touch the one remaining cubie
-		allNodes.removeFirst()
+		cubieNodes.removeFirst()
 		
 		// delete all other cubies
-		for nodeToDelete in allNodes {
+		for nodeToDelete in cubieNodes {
 			// animate the explosion
-			self.createExplosion(geometry: nodeToDelete.geometry!,
-								 position: nodeToDelete.presentation.position,
-								 rotation: nodeToDelete.presentation.rotation)
+//			self.createExplosion(geometry: nodeToDelete.geometry!,
+//								 position: nodeToDelete.presentation.position,
+//								 rotation: nodeToDelete.presentation.rotation)
 			
 			// remove the cubie from the remaining database
 			self.ref?.child("remaining").child(nodeToDelete.name!).removeValue()
@@ -192,7 +208,7 @@ class GameViewController: UIViewController {
 				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 5.6, z: 4.5 - Float(j))
 				cubieNode.name = "top " + String(i) + ", " + String(j)
-				scene.rootNode.addChildNode(cubieNode)
+				self.cubeNode.addChildNode(cubieNode)
 			}
 		}
 	}
@@ -206,7 +222,7 @@ class GameViewController: UIViewController {
 				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: -5.6, z: 4.5 - Float(j))
 				cubieNode.name = "bottom " + String(i) + ", " + String(j)
-				scene.rootNode.addChildNode(cubieNode)
+				cubeNode.addChildNode(cubieNode)
 			}
 		}
 	}
@@ -220,7 +236,7 @@ class GameViewController: UIViewController {
 				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: 5.6)
 				cubieNode.name = "front " + String(i) + ", " + String(j)
-				scene.rootNode.addChildNode(cubieNode)
+				cubeNode.addChildNode(cubieNode)
 			}
 		}
 	}
@@ -234,7 +250,7 @@ class GameViewController: UIViewController {
 				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: -5.6)
 				cubieNode.name = "back " + String(i) + ", " + String(j)
-				scene.rootNode.addChildNode(cubieNode)
+				cubeNode.addChildNode(cubieNode)
 			}
 		}
 	}
@@ -248,7 +264,7 @@ class GameViewController: UIViewController {
 				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: -5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
 				cubieNode.name = "left " + String(i) + ", " + String(j)
-				scene.rootNode.addChildNode(cubieNode)
+				cubeNode.addChildNode(cubieNode)
 			}
 		}
 	}
@@ -262,7 +278,7 @@ class GameViewController: UIViewController {
 				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
 				cubieNode.position = SCNVector3(x: 5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
 				cubieNode.name = "right " + String(i) + ", " + String(j)
-				scene.rootNode.addChildNode(cubieNode)
+				cubeNode.addChildNode(cubieNode)
 			}
 		}
 	}
@@ -416,15 +432,15 @@ class GameViewController: UIViewController {
 					
 					self.ref?.child("remaining").child(result.node.name!).removeValue()
 					self.ref?.child("deleted").child(result.node.name!).setValue(cashVal)
-					if let nodeToDelete = self.scene.rootNode.childNode(withName: key, recursively: true) {
+					if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
 						// if cube needs to be reset
-						if self.scene.rootNode.childNodes.count == 5 {
+						if self.cubeNode.childNodes.count == 1 {
 							self.resetCube(doFullReset: true)
 						}
 						else {
-							self.createExplosion(geometry: nodeToDelete.geometry!,
-												 position: nodeToDelete.presentation.position,
-												 rotation: nodeToDelete.presentation.rotation)
+//							self.createExplosion(geometry: nodeToDelete.geometry!,
+//												 position: nodeToDelete.presentation.position,
+//												 rotation: nodeToDelete.presentation.rotation)
 							
 							nodeToDelete.removeFromParentNode()
 						}
