@@ -94,9 +94,9 @@ class GameViewController: UIViewController {
 					self.resetCube(doFullReset: false)
 				}
 				else {
-//					self.createExplosion(geometry: nodeToDelete.geometry!,
-//										 position: nodeToDelete.presentation.position,
-//										 rotation: nodeToDelete.presentation.rotation)
+					self.createExplosion(geometry: nodeToDelete.geometry!,
+										 position: nodeToDelete.presentation.position,
+										 rotation: nodeToDelete.presentation.rotation)
 					
 					nodeToDelete.removeFromParentNode()
 				}
@@ -214,9 +214,9 @@ class GameViewController: UIViewController {
 		// delete all other cubies
 		for nodeToDelete in cubieNodes {
 			// animate the explosion
-//			self.createExplosion(geometry: nodeToDelete.geometry!,
-//								 position: nodeToDelete.presentation.position,
-//								 rotation: nodeToDelete.presentation.rotation)
+			self.createExplosion(geometry: nodeToDelete.geometry!,
+								 position: nodeToDelete.presentation.position,
+								 rotation: nodeToDelete.presentation.rotation)
 			
 			// remove the cubie from the remaining database
 			self.ref?.child("remaining").child(nodeToDelete.name!).removeValue()
@@ -417,17 +417,17 @@ class GameViewController: UIViewController {
 	}
 	
 	func createExplosion(geometry: SCNGeometry, position: SCNVector3, rotation: SCNVector4) {
-		let explosion = SCNParticleSystem(named: "BokehParticle.scnp", inDirectory: "art.scnassets")!
-		explosion.emitterShape = geometry
-		explosion.birthLocation = .surface
-		
-		let rotationMatrix = SCNMatrix4MakeRotation(rotation.w, rotation.x, rotation.y, rotation.z)
-		
-		let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y, position.z)
-		
-		let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
-		
-		scene.addParticleSystem(explosion, transform: transformMatrix)
+//		let explosion = SCNParticleSystem(named: "BokehParticle.scnp", inDirectory: "art.scnassets")!
+//		explosion.emitterShape = geometry
+//		explosion.birthLocation = .surface
+//		
+//		let rotationMatrix = SCNMatrix4MakeRotation(rotation.w, rotation.x, rotation.y, rotation.z)
+//		
+//		let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y, position.z)
+//		
+//		let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
+//		
+//		scene.addParticleSystem(explosion, transform: transformMatrix)
 	}
 	
 	@objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
@@ -481,9 +481,9 @@ class GameViewController: UIViewController {
 							self.resetCube(doFullReset: true)
 						}
 						else {
-//							self.createExplosion(geometry: nodeToDelete.geometry!,
-//												 position: nodeToDelete.presentation.position,
-//												 rotation: nodeToDelete.presentation.rotation)
+							self.createExplosion(geometry: nodeToDelete.geometry!,
+												 position: nodeToDelete.presentation.position,
+												 rotation: nodeToDelete.presentation.rotation)
 							
 							nodeToDelete.removeFromParentNode()
 						}
