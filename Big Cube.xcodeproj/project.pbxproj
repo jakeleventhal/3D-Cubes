@@ -14,12 +14,12 @@
 		3D3C896B2095E355000280E9 /* Break 1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D3C89662095E355000280E9 /* Break 1.mp3 */; };
 		3D3C896C2095E355000280E9 /* Break 2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D3C89672095E355000280E9 /* Break 2.mp3 */; };
 		3D3C896D2095E355000280E9 /* Break 4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D3C89682095E355000280E9 /* Break 4.mp3 */; };
-		3D3CECE2208AD1C70055400F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3CECE1208AD1C70055400F /* LoginViewController.swift */; };
 		3D436FE8208B463400B95E72 /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FE7208B463400B95E72 /* AddFriendView.swift */; };
 		3D436FEA208B464000B95E72 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FE9208B464000B95E72 /* ProfileView.swift */; };
 		3D436FEC208B465700B95E72 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FEB208B465700B95E72 /* MenuView.swift */; };
 		3D436FF0208B46FD00B95E72 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FEF208B46FD00B95E72 /* FriendsView.swift */; };
 		3D436FF2208B470D00B95E72 /* LeaderboardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FF1208B470D00B95E72 /* LeaderboardsView.swift */; };
+		3D530F34209684210055D234 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D530F33209684210055D234 /* LoginViewController.swift */; };
 		3DEA116C1F2C05EB00461804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA116B1F2C05EB00461804 /* AppDelegate.swift */; };
 		3DEA116E1F2C05EB00461804 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DEA116D1F2C05EB00461804 /* art.scnassets */; };
 		3DEA11701F2C05EB00461804 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA116F1F2C05EB00461804 /* GameViewController.swift */; };
@@ -36,13 +36,13 @@
 		3D3C89662095E355000280E9 /* Break 1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Break 1.mp3"; sourceTree = "<group>"; };
 		3D3C89672095E355000280E9 /* Break 2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Break 2.mp3"; sourceTree = "<group>"; };
 		3D3C89682095E355000280E9 /* Break 4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Break 4.mp3"; sourceTree = "<group>"; };
-		3D3CECE1208AD1C70055400F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3D436FE7208B463400B95E72 /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
 		3D436FE9208B464000B95E72 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		3D436FEB208B465700B95E72 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		3D436FEF208B46FD00B95E72 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		3D436FF1208B470D00B95E72 /* LeaderboardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsView.swift; sourceTree = "<group>"; };
 		3D4DE102208ADF910099CE83 /* Big Cube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Big Cube.entitlements"; sourceTree = "<group>"; };
+		3D530F33209684210055D234 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3DEA11681F2C05EB00461804 /* Big Cube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Big Cube.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DEA116B1F2C05EB00461804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DEA116D1F2C05EB00461804 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -117,9 +117,9 @@
 				3D36C0BC1F2C0922004FD0A6 /* GoogleService-Info.plist */,
 				3DEA116B1F2C05EB00461804 /* AppDelegate.swift */,
 				3DEA116D1F2C05EB00461804 /* art.scnassets */,
+				3D530F33209684210055D234 /* LoginViewController.swift */,
 				3DEA116F1F2C05EB00461804 /* GameViewController.swift */,
 				3DEA11711F2C05EB00461804 /* Main.storyboard */,
-				3D3CECE1208AD1C70055400F /* LoginViewController.swift */,
 				3D3C896E2095E36B000280E9 /* Audio Files */,
 				3DEA11741F2C05EB00461804 /* Assets.xcassets */,
 				3DEA11761F2C05EB00461804 /* LaunchScreen.storyboard */,
@@ -286,11 +286,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D3CECE2208AD1C70055400F /* LoginViewController.swift in Sources */,
 				3D436FEC208B465700B95E72 /* MenuView.swift in Sources */,
 				3D436FF0208B46FD00B95E72 /* FriendsView.swift in Sources */,
 				3DEA11701F2C05EB00461804 /* GameViewController.swift in Sources */,
 				3D436FF2208B470D00B95E72 /* LeaderboardsView.swift in Sources */,
+				3D530F34209684210055D234 /* LoginViewController.swift in Sources */,
 				3D436FEA208B464000B95E72 /* ProfileView.swift in Sources */,
 				3D436FE8208B463400B95E72 /* AddFriendView.swift in Sources */,
 				3DEA116C1F2C05EB00461804 /* AppDelegate.swift in Sources */,

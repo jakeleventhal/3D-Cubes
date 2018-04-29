@@ -20,7 +20,7 @@ class GameViewController: UIViewController {
 	
 	// set up Firebase variables
 	var ref: DatabaseReference?
-	var databaseHandle:DatabaseHandle?
+	var databaseHandle: DatabaseHandle?
 	
 	// set up variables for the scene
 	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
@@ -31,6 +31,7 @@ class GameViewController: UIViewController {
 	// set up variables for audio
 	var breakSoundPlayer = AVAudioPlayer()
 	var backgroundMusicPlayer = AVAudioPlayer()
+	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -70,37 +71,23 @@ class GameViewController: UIViewController {
 		// add lights to the scene
 		addLights()
 		
-		// retrieve the cubies
-		databaseHandle = ref?.child("deleted").observe(.childAdded, with: {(snapshot) in
-			let key = snapshot.key
-			
-			if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
-				if self.cubeNode.childNodes.count == 1 {
-					self.resetCube(doFullReset: false)
-				}
-				else {
-					nodeToDelete.removeFromParentNode()
-				}
-			}
-		})
-		
 		// listen for updates
 		databaseHandle = ref?.child("remaining").observe(.childRemoved, with: {(snapshot) in
-			// code to execute when a child is added under "faces"
-			
 			// retrieve the post
 			let key = snapshot.key
 			
 			if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
+				// reset the cube if necessary
 				if self.cubeNode.childNodes.count == 1 {
-					self.resetCube(doFullReset: false)
+					self.resetCube(scatterWinningTiles: false)
 				}
+				// remove the node from the cube
 				else {
+					nodeToDelete.removeFromParentNode()
+					
 					self.createExplosion(geometry: nodeToDelete.geometry!,
 										 position: nodeToDelete.presentation.position,
 										 rotation: nodeToDelete.presentation.rotation)
-					
-					nodeToDelete.removeFromParentNode()
 				}
 			}
 		})
@@ -110,9 +97,6 @@ class GameViewController: UIViewController {
 		
 		// set the scene to the view
 		scnView.scene = scene
-		
-		// allows the user to manipulate the camera
-		// scnView.allowsCameraControl = true
 		
 		// show statistics such as fps and timing information
 		scnView.showsStatistics = true
@@ -134,11 +118,31 @@ class GameViewController: UIViewController {
 		
 		playBackgroundMusic()
 		
-		flyIn()
+		// retrieve the loaded state of the cube
+		databaseHandle = ref?.child("deleted").observe(.value, with: {(snapshot) in
+			// retrieve all the keys
+			let deletedCubies = (snapshot.value as? [String : AnyObject] ?? [:]).keys
+			
+			// delete each cubie
+			for cubie in deletedCubies {
+				if let nodeToDelete = self.cubeNode.childNode(withName: cubie, recursively: true) {
+					if self.cubeNode.childNodes.count == 1 {
+						self.resetCube(scatterWinningTiles: false)
+					}
+					else {
+						nodeToDelete.removeFromParentNode()
+					}
+				}
+			}
+			
+			// fly in when finished
+			self.flyIn()
+		})
 	}
 	
 	// fly in to the cube from far away
 	func flyIn() {
+		// perform the action in a different thread
 		DispatchQueue.global(qos: .background).async {
 			SCNTransaction.begin()
 			SCNTransaction.animationDuration = 1.25
@@ -154,6 +158,7 @@ class GameViewController: UIViewController {
 											SCNVector3(x: 10, y: 10, z: 10),
 											SCNVector3(x: 0, y: -10, z: 10)]
 		
+		// add each light to the scene
 		for position in lightPositions {
 			let lightNode = SCNNode()
 			lightNode.light = SCNLight()
@@ -164,39 +169,39 @@ class GameViewController: UIViewController {
 		}
 	}
 	
+	// a function to handle pinching
 	@objc func handlePinch(_ gestureRecognizer: UIPinchGestureRecognizer) {
-		let view = self.view as! SCNView
-		let cameraNode = view.scene!.rootNode.childNode(withName: "camera", recursively: false)
+		// get the scale of the gesture
 		let scale = gestureRecognizer.velocity
 		
+		// handle beginning and ending the gesture
 		switch gestureRecognizer.state {
 			case .began:
 				break
 			case .changed:
+				// update the camera scale
 				let newScale = (cameraNode?.camera?.fieldOfView)! - CGFloat(scale)
 				if newScale >= 20 && newScale <= 115 {
 					cameraNode!.camera!.fieldOfView = cameraNode!.camera!.fieldOfView - CGFloat(scale)
 				}
-				break
 			default:
 				break
 		}
 	}
 	
+	// a function to handle panning
 	@objc func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
+		// retrieve the position and angle
 		let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
 		let x = Float(translation.x)
 		let y = Float(-translation.y)
-		let anglePan = sqrt(pow(x,2)+pow(y,2))*(Float)(Double.pi)/180
-		var rotationVector = SCNVector4()
-		rotationVector.x = -y
-		rotationVector.y = x
-		rotationVector.z = 0
-		rotationVector.w = anglePan
-		cubeNode.rotation = rotationVector
+		let anglePan = sqrt(pow(x, 2) + pow(y , 2)) * (Float)(Double.pi) / 180
 		
+		// update the cube's rotation
+		cubeNode.rotation = SCNVector4(x: -y, y: x, z: 0, w: anglePan)
 		cubeNode.transform = SCNMatrix4MakeRotation(anglePan, -y, x, 0)
-		
+
+		// if panning ended
 		if gestureRecognizer.state == UIGestureRecognizerState.ended {
 			let currentPivot = cubeNode.pivot
 			let currentPostion = cubeNode.position
@@ -344,6 +349,7 @@ class GameViewController: UIViewController {
 		// Release any cached data, images, etc that aren't in use.
 	}
 	
+	// get a random shade of blue
 	func getRandomShadeOfBlue() -> UIColor {
 		let rand = CGFloat(arc4random())
 		let max = CGFloat(UINT32_MAX)
@@ -353,7 +359,8 @@ class GameViewController: UIViewController {
 		return UIColor(red: 0, green: 0, blue: randomBlueValue, alpha: 1)
 	}
 	
-	func resetCube(doFullReset: Bool) {
+	// reset the cube
+	func resetCube(scatterWinningTiles: Bool) {
 		// highlight the cube
 		if let material = scene.rootNode.childNode(withName: "base", recursively: true)?.geometry?.firstMaterial {
 			// highlight it
@@ -380,7 +387,7 @@ class GameViewController: UIViewController {
 							let cubieName = face + " " + String(i) + ", " + String(j)
 							// add each cubie name to the list of all names
 							cubieNames.append(cubieName)
-							if (doFullReset) {
+							if (scatterWinningTiles) {
 								self.ref?.child("remaining").child(cubieName).setValue(0)
 							}
 						}
@@ -389,7 +396,7 @@ class GameViewController: UIViewController {
 				self.ref?.child("deleted").removeValue()
 				
 				// if scatter should occur
-				if (doFullReset) {
+				if (scatterWinningTiles) {
 					self.scatterWinningTiles(cubieNames: cubieNames)
 				}
 			}
@@ -482,7 +489,7 @@ class GameViewController: UIViewController {
 						
 						// if cube needs to be reset
 						if self.cubeNode.childNodes.count == 1 {
-							self.resetCube(doFullReset: true)
+							self.resetCube(scatterWinningTiles: true)
 						}
 						else {
 							self.createExplosion(geometry: nodeToDelete.geometry!,

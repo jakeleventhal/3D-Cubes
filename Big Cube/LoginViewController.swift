@@ -37,6 +37,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 				return
 			}
 			
+			// retrieve the Facebook credential
 			let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
 			
 			Auth.auth().signIn(with: credential) { (user, error) in
