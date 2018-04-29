@@ -50,24 +50,6 @@ class GameViewController: UIViewController {
 		// place the camera
 		cameraNode.position = SCNVector3(x: 0, y: 0, z: 32)
 		
-		// top light
-		let lightNode1 = SCNNode()
-		lightNode1.light = SCNLight()
-		lightNode1.light!.type = .omni
-		lightNode1.light!.intensity = 1750
-		lightNode1.position = SCNVector3(x: 10, y: 10, z: 10)
-		lightNode1.name = "lightNode1"
-		scene.rootNode.addChildNode(lightNode1)
-		
-		// create and add a light to the bottom of the scene
-		let lightNode2 = SCNNode()
-		lightNode2.light = SCNLight()
-		lightNode2.light!.type = .omni
-		lightNode2.light!.intensity = 1750
-		lightNode2.position = SCNVector3(x: -10, y: -10, z: -10)
-		lightNode2.name = "lightNode2"
-		scene.rootNode.addChildNode(lightNode2)
-		
 		// create the base cube
 		let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0.0)
 		cubeNode = SCNNode(geometry: cube)
@@ -79,6 +61,8 @@ class GameViewController: UIViewController {
 		// add the faces to the cube
 		initializeFaces()
 		
+		// add lights to the scene
+		addLights()
 		
 		// retrieve the cubies
 		databaseHandle = ref?.child("deleted").observe(.childAdded, with: {(snapshot) in
@@ -137,6 +121,24 @@ class GameViewController: UIViewController {
 		// add a pan gesture recognizer
 		let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
 		scnView.addGestureRecognizer(panGesture)
+	}
+	
+	// add lights to the scene
+	func addLights() {
+		// create an array of light positions
+		var lightPositions: [SCNVector3] = []
+		lightPositions.append(SCNVector3(x: -10, y: 10, z: 10))
+		lightPositions.append(SCNVector3(x: 10, y: 10, z: 10))
+		lightPositions.append(SCNVector3(x: 0, y: -10, z: 10))
+		
+		for position in lightPositions {
+			let lightNode = SCNNode()
+			lightNode.light = SCNLight()
+			lightNode.light!.type = .omni
+			lightNode.light!.intensity = 600
+			lightNode.position = position
+			scene.rootNode.addChildNode(lightNode)
+		}
 	}
 	
 	@objc func handlePan(_ gestureRecognize: UIPanGestureRecognizer) {
