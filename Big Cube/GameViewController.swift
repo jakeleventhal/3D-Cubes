@@ -22,13 +22,15 @@ class GameViewController: UIViewController {
 	var ref: DatabaseReference?
 	var databaseHandle:DatabaseHandle?
 	
+	// set up variables for the scene
 	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
+	var cameraNode: SCNNode!
 	var cubeNode: SCNNode!
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	
-	var cameraNode: SCNNode!
-	
-	var audioPlayer = AVAudioPlayer()
+	// set up variables for audio
+	var breakSoundPlayer = AVAudioPlayer()
+	var backgroundMusicPlayer = AVAudioPlayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -129,6 +131,8 @@ class GameViewController: UIViewController {
 		// add a zoom gesture recognizer
 		let zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
 		scnView.addGestureRecognizer(zoomGesture)
+		
+		playBackgroundMusic()
 		
 		flyIn()
 	}
@@ -420,13 +424,13 @@ class GameViewController: UIViewController {
 //		let explosion = SCNParticleSystem(named: "BokehParticle.scnp", inDirectory: "art.scnassets")!
 //		explosion.emitterShape = geometry
 //		explosion.birthLocation = .surface
-//		
+//
 //		let rotationMatrix = SCNMatrix4MakeRotation(rotation.w, rotation.x, rotation.y, rotation.z)
-//		
+//
 //		let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y, position.z)
-//		
+//
 //		let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
-//		
+//
 //		scene.addParticleSystem(explosion, transform: transformMatrix)
 	}
 	
@@ -493,11 +497,29 @@ class GameViewController: UIViewController {
 		}
 	}
 	
+	func playBackgroundMusic() {
+		// get background music
+		let backgroundMusic = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Background Music", ofType: "mp3")!)
+		
+		do {
+			// set up audio playback
+			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+			try AVAudioSession.sharedInstance().setActive(true)
+			
+			// play the background music
+			try self.backgroundMusicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
+			self.backgroundMusicPlayer.prepareToPlay()
+			self.backgroundMusicPlayer.play()
+		} catch {
+			print(error)
+		}
+	}
+	
 	func playBreakSound() {
 		DispatchQueue.global(qos: .background).async {
-			// get glass break audio sound
+			// get break audio sound
 			let glassSoundNumber = arc4random_uniform(4) + 1
-			let resourceName = "break\(glassSoundNumber)"
+			let resourceName = "Break \(glassSoundNumber)"
 			let breakSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: resourceName, ofType: "mp3")!)
 			
 			do {
@@ -506,11 +528,11 @@ class GameViewController: UIViewController {
 				try AVAudioSession.sharedInstance().setActive(true)
 				
 				// play the sound
-				try self.audioPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
-				self.audioPlayer.prepareToPlay()
-				self.audioPlayer.play()
+				try self.breakSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
+				self.breakSoundPlayer.prepareToPlay()
+				self.breakSoundPlayer.play()
 			} catch {
-				print("Error occured while playing break sound")
+				print(error)
 			}
 		}
 	}
