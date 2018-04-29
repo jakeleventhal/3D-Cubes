@@ -31,15 +31,12 @@ class GameViewController: UIViewController {
 		super.viewDidLoad()
 		
 		// set the background of the scene
-		scene.background.contents =
-			[
-				UIImage(named: "space.jpg") as UIImage?,
-				UIImage(named: "space.jpg") as UIImage?,
-				UIImage(named: "space.jpg") as UIImage?,
-				UIImage(named: "space.jpg") as UIImage?,
-				UIImage(named: "space.jpg") as UIImage?,
-				UIImage(named: "space.jpg") as UIImage?
-			]
+		scene.background.contents = [UIImage(named: "space.jpg") as UIImage?,
+									UIImage(named: "space.jpg") as UIImage?,
+									UIImage(named: "space.jpg") as UIImage?,
+									UIImage(named: "space.jpg") as UIImage?,
+									UIImage(named: "space.jpg") as UIImage?,
+									UIImage(named: "space.jpg") as UIImage?]
 		
 		// set the Firebase reference
 		ref = Database.database().reference()
@@ -135,7 +132,7 @@ class GameViewController: UIViewController {
 	
 	// fly in to the cube from far away
 	func flyIn() {
-		DispatchQueue.main.async {
+		DispatchQueue.global(qos: .background).async {
 			SCNTransaction.begin()
 			SCNTransaction.animationDuration = 1.25
 			self.cameraNode!.camera!.fieldOfView = 75
@@ -146,10 +143,9 @@ class GameViewController: UIViewController {
 	// add lights to the scene
 	func addLights() {
 		// create an array of light positions
-		var lightPositions: [SCNVector3] = []
-		lightPositions.append(SCNVector3(x: -10, y: 10, z: 10))
-		lightPositions.append(SCNVector3(x: 10, y: 10, z: 10))
-		lightPositions.append(SCNVector3(x: 0, y: -10, z: 10))
+		let lightPositions: [SCNVector3] = [SCNVector3(x: -10, y: 10, z: 10),
+											SCNVector3(x: 10, y: 10, z: 10),
+											SCNVector3(x: 0, y: -10, z: 10)]
 		
 		for position in lightPositions {
 			let lightNode = SCNNode()
@@ -418,7 +414,7 @@ class GameViewController: UIViewController {
 	}
 	
 	func createExplosion(geometry: SCNGeometry, position: SCNVector3, rotation: SCNVector4) {
-		let explosion = SCNParticleSystem(named: "BokehParticle.scnp", inDirectory: nil)!
+		let explosion = SCNParticleSystem(named: "BokehParticle.scnp", inDirectory: "art.scnassets")!
 		explosion.emitterShape = geometry
 		explosion.birthLocation = .surface
 		
