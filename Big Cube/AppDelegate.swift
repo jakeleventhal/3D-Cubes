@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FBSDKCoreKit
 
+@available(iOS 11.0, *)
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {

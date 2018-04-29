@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 
+@available(iOS 11.0, *)
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 	
 	@IBOutlet weak var facebookLoginButton: FBSDKLoginButton!

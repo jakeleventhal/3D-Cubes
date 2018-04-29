@@ -11,6 +11,7 @@ import QuartzCore
 import SceneKit
 import FirebaseDatabase
 
+@available(iOS 11.0, *)
 class GameViewController: UIViewController {
 	// configuration
 	let cubiesPerFace: Double = 100
@@ -23,6 +24,8 @@ class GameViewController: UIViewController {
 	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
 	var cubeNode: SCNNode!
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
+	
+	var cameraNode: SCNNode!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -42,9 +45,10 @@ class GameViewController: UIViewController {
 		ref = Database.database().reference()
 		
 		// create and add a camera to the scene
-		let cameraNode = SCNNode()
+		cameraNode = SCNNode()
 		cameraNode.camera = SCNCamera()
 		cameraNode.name = "camera"
+		self.cameraNode!.camera!.fieldOfView = 179.39
 		scene.rootNode.addChildNode(cameraNode)
 		
 		// place the camera
@@ -80,9 +84,9 @@ class GameViewController: UIViewController {
 		
 		// listen for updates
 		databaseHandle = ref?.child("remaining").observe(.childRemoved, with: {(snapshot) in
-			// Code to execute when a child is added under "faces"
+			// code to execute when a child is added under "faces"
 			
-			// Retrieve the post
+			// retrieve the post
 			let key = snapshot.key
 			
 			if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
@@ -121,6 +125,22 @@ class GameViewController: UIViewController {
 		// add a pan gesture recognizer
 		let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
 		scnView.addGestureRecognizer(panGesture)
+		
+		// add a zoom gesture recognizer
+		let zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+		scnView.addGestureRecognizer(zoomGesture)
+		
+		flyIn()
+	}
+	
+	// fly in to the cube from far away
+	func flyIn() {
+		DispatchQueue.main.async {
+			SCNTransaction.begin()
+			SCNTransaction.animationDuration = 1.25
+			self.cameraNode!.camera!.fieldOfView = 75
+			SCNTransaction.commit()
+		}
 	}
 	
 	// add lights to the scene
@@ -141,8 +161,27 @@ class GameViewController: UIViewController {
 		}
 	}
 	
-	@objc func handlePan(_ gestureRecognize: UIPanGestureRecognizer) {
-		let translation = gestureRecognize.translation(in: gestureRecognize.view)
+	@objc func handlePinch(_ gestureRecognizer: UIPinchGestureRecognizer) {
+		let view = self.view as! SCNView
+		let cameraNode = view.scene!.rootNode.childNode(withName: "camera", recursively: false)
+		let scale = gestureRecognizer.velocity
+		
+		switch gestureRecognizer.state {
+			case .began:
+				break
+			case .changed:
+				let newScale = (cameraNode?.camera?.fieldOfView)! - CGFloat(scale)
+				if newScale >= 20 && newScale <= 115 {
+					cameraNode!.camera!.fieldOfView = cameraNode!.camera!.fieldOfView - CGFloat(scale)
+				}
+				break
+			default:
+				break
+		}
+	}
+	
+	@objc func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
+		let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
 		let x = Float(translation.x)
 		let y = Float(-translation.y)
 		let anglePan = sqrt(pow(x,2)+pow(y,2))*(Float)(Double.pi)/180
@@ -155,7 +194,7 @@ class GameViewController: UIViewController {
 		
 		cubeNode.transform = SCNMatrix4MakeRotation(anglePan, -y, x, 0)
 		
-		if gestureRecognize.state == UIGestureRecognizerState.ended {
+		if gestureRecognizer.state == UIGestureRecognizerState.ended {
 			let currentPivot = cubeNode.pivot
 			let currentPostion = cubeNode.position
 			let changePivot = SCNMatrix4Invert(SCNMatrix4MakeRotation(cubeNode.rotation.w, cubeNode.rotation.x, cubeNode.rotation.y, cubeNode.rotation.z))
@@ -392,13 +431,13 @@ class GameViewController: UIViewController {
 		scene.addParticleSystem(explosion, transform: transformMatrix)
 	}
 	
-	@objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
+	@objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
 		DispatchQueue.global(qos: .userInitiated).async {
 			// retrieve the SCNView
 			let scnView = self.view as! SCNView
 			
 			// check what nodes are tapped
-			let p = gestureRecognize.location(in: scnView)
+			let p = gestureRecognizer.location(in: scnView)
 			
 			let hitResults = scnView.hitTest(p, options: [:])
 			// check that user clicked on at least one object
@@ -413,7 +452,7 @@ class GameViewController: UIViewController {
 					// retrieve the key
 					let key = snapshot.key
 					
-					// retreive the cash value
+					// retrieve the cash value
 					let cashVal = (snapshot.value as? Double)!
 					
 					// display an alert if a user wins
