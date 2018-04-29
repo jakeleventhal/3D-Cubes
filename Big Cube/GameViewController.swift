@@ -10,6 +10,7 @@ import UIKit
 import QuartzCore
 import SceneKit
 import FirebaseDatabase
+import AVFoundation
 
 @available(iOS 11.0, *)
 class GameViewController: UIViewController {
@@ -26,6 +27,8 @@ class GameViewController: UIViewController {
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	
 	var cameraNode: SCNNode!
+	
+	var audioPlayer = AVAudioPlayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -470,6 +473,9 @@ class GameViewController: UIViewController {
 					self.ref?.child("remaining").child(result.node.name!).removeValue()
 					self.ref?.child("deleted").child(result.node.name!).setValue(cashVal)
 					if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
+						// play the sound for breaking a cubie
+						self.playBreakSound()
+						
 						// if cube needs to be reset
 						if self.cubeNode.childNodes.count == 1 {
 							self.resetCube(doFullReset: true)
@@ -485,6 +491,27 @@ class GameViewController: UIViewController {
 				})
 			}
 		}
-		
+	}
+	
+	func playBreakSound() {
+		DispatchQueue.global(qos: .background).async {
+			// get glass break audio sound
+			let glassSoundNumber = arc4random_uniform(4) + 1
+			let resourceName = "break\(glassSoundNumber)"
+			let breakSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: resourceName, ofType: "mp3")!)
+			
+			do {
+				// set up audio playback
+				try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+				try AVAudioSession.sharedInstance().setActive(true)
+				
+				// play the sound
+				try self.audioPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
+				self.audioPlayer.prepareToPlay()
+				self.audioPlayer.play()
+			} catch {
+				print("Error occured while playing break sound")
+			}
+		}
 	}
 }

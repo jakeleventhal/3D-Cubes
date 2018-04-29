@@ -15,6 +15,10 @@
 		3D436FEC208B465700B95E72 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FEB208B465700B95E72 /* MenuView.swift */; };
 		3D436FF0208B46FD00B95E72 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FEF208B46FD00B95E72 /* FriendsView.swift */; };
 		3D436FF2208B470D00B95E72 /* LeaderboardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D436FF1208B470D00B95E72 /* LeaderboardsView.swift */; };
+		3D649BDA2095D8E800471793 /* break2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D649BD62095D8E800471793 /* break2.mp3 */; };
+		3D649BDB2095D8E800471793 /* break1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D649BD72095D8E800471793 /* break1.mp3 */; };
+		3D649BDC2095D8E800471793 /* break3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D649BD82095D8E800471793 /* break3.mp3 */; };
+		3D649BDD2095D8E800471793 /* break4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D649BD92095D8E800471793 /* break4.mp3 */; };
 		3DEA116C1F2C05EB00461804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA116B1F2C05EB00461804 /* AppDelegate.swift */; };
 		3DEA116E1F2C05EB00461804 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DEA116D1F2C05EB00461804 /* art.scnassets */; };
 		3DEA11701F2C05EB00461804 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DEA116F1F2C05EB00461804 /* GameViewController.swift */; };
@@ -33,6 +37,10 @@
 		3D436FEF208B46FD00B95E72 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		3D436FF1208B470D00B95E72 /* LeaderboardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsView.swift; sourceTree = "<group>"; };
 		3D4DE102208ADF910099CE83 /* Big Cube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Big Cube.entitlements"; sourceTree = "<group>"; };
+		3D649BD62095D8E800471793 /* break2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = break2.mp3; sourceTree = "<group>"; };
+		3D649BD72095D8E800471793 /* break1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = break1.mp3; sourceTree = "<group>"; };
+		3D649BD82095D8E800471793 /* break3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = break3.mp3; sourceTree = "<group>"; };
+		3D649BD92095D8E800471793 /* break4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = break4.mp3; sourceTree = "<group>"; };
 		3DEA11681F2C05EB00461804 /* Big Cube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Big Cube.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DEA116B1F2C05EB00461804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DEA116D1F2C05EB00461804 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -98,6 +106,10 @@
 				3DEA116F1F2C05EB00461804 /* GameViewController.swift */,
 				3DEA11711F2C05EB00461804 /* Main.storyboard */,
 				3D3CECE1208AD1C70055400F /* LoginViewController.swift */,
+				3D649BD72095D8E800471793 /* break1.mp3 */,
+				3D649BD62095D8E800471793 /* break2.mp3 */,
+				3D649BD82095D8E800471793 /* break3.mp3 */,
+				3D649BD92095D8E800471793 /* break4.mp3 */,
 				3DEA11741F2C05EB00461804 /* Assets.xcassets */,
 				3DEA11761F2C05EB00461804 /* LaunchScreen.storyboard */,
 				3DEA11791F2C05EB00461804 /* Info.plist */,
@@ -190,11 +202,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D649BDC2095D8E800471793 /* break3.mp3 in Resources */,
 				3DEA116E1F2C05EB00461804 /* art.scnassets in Resources */,
+				3D649BDB2095D8E800471793 /* break1.mp3 in Resources */,
+				3D649BDD2095D8E800471793 /* break4.mp3 in Resources */,
 				3DEA11781F2C05EB00461804 /* LaunchScreen.storyboard in Resources */,
 				3D36C0BD1F2C0922004FD0A6 /* GoogleService-Info.plist in Resources */,
 				3DEA11751F2C05EB00461804 /* Assets.xcassets in Resources */,
 				3DEA11731F2C05EB00461804 /* Main.storyboard in Resources */,
+				3D649BDA2095D8E800471793 /* break2.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
