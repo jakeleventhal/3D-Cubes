@@ -507,11 +507,11 @@ class GameViewController: UIViewController {
 					}
 				})
 				
-				
 				// update the user's score
 				self.ref?.child("users").child(self.userID!).runTransactionBlock { (currentData: MutableData) -> TransactionResult in
 					if var userData = currentData.value as? [String: Any] {
 						userData["score"] = (userData["score"] as? Int)! + 1
+						userData["coins"] = (userData["coins"] as? Int)! + 1
 						
 						currentData.value = userData
 						return TransactionResult.success(withValue: currentData)

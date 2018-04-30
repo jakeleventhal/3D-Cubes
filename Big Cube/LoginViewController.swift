@@ -54,6 +54,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 				ref.child("users").observeSingleEvent(of: .value, with: { (snapshot) in
 					if !(snapshot.hasChild(userID)) {
 						ref.child("users").child(userID).child("score").setValue(0)
+						ref.child("users").child(userID).child("coins").setValue(0)
 					}
 				})
 				
