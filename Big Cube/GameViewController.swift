@@ -502,17 +502,12 @@ class GameViewController: UIViewController {
 					}
 				})
 				
+				
 				// update the user's score
-				self.ref?.child("users").runTransactionBlock { (currentData: MutableData) -> TransactionResult in
+				self.ref?.child("users").child(self.userID!).runTransactionBlock { (currentData: MutableData) -> TransactionResult in
 					if var userData = currentData.value as? [String: Any] {
-						var count: Int = 1
+						userData["score"] = (userData["score"] as? Int)! + 1
 						
-						// if the user is already in the database
-						if currentData.hasChild(atPath: self.userID!) {
-							count += userData[self.userID!] as! Int
-						}
-						
-						userData[self.userID!] = count
 						currentData.value = userData
 						return TransactionResult.success(withValue: currentData)
 					}

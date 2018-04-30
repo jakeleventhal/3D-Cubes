@@ -48,6 +48,15 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 				
 				print("Successfully logged in Facebook user:", result ?? "")
 				
+				// add the user to the database if not already present
+				let ref: DatabaseReference = Database.database().reference()
+				let userID: String! = Auth.auth().currentUser?.uid
+				ref.child("users").observeSingleEvent(of: .value, with: { (snapshot) in
+					if !(snapshot.hasChild(userID)) {
+						ref.child("users").child(userID).child("score").setValue(0)
+					}
+				})
+				
 				// navigate to the game
 				self.navigateToGame()
 			}
