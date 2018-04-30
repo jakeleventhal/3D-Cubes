@@ -515,6 +515,7 @@ class GameViewController: UIViewController {
 			
 			// play the background music
 			try self.backgroundMusicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
+			self.backgroundMusicPlayer.numberOfLoops = -1
 			self.backgroundMusicPlayer.prepareToPlay()
 			self.backgroundMusicPlayer.play()
 		} catch {
