@@ -9,8 +9,10 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import Firebase
 import FirebaseDatabase
 import AVFoundation
+import FBSDKCoreKit
 
 @available(iOS 11.0, *)
 class GameViewController: UIViewController {
@@ -20,6 +22,7 @@ class GameViewController: UIViewController {
 	
 	// set up Firebase variables
 	var ref: DatabaseReference?
+	let userID: String! = Auth.auth().currentUser!.uid
 	
 	// set up variables for the scene
 	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
@@ -30,7 +33,6 @@ class GameViewController: UIViewController {
 	// set up variables for audio
 	var breakSoundPlayer = AVAudioPlayer()
 	var backgroundMusicPlayer = AVAudioPlayer()
-	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -499,6 +501,24 @@ class GameViewController: UIViewController {
 						}
 					}
 				})
+				
+				// update the user's score
+				self.ref?.child("users").runTransactionBlock { (currentData: MutableData) -> TransactionResult in
+					if var userData = currentData.value as? [String: Any] {
+						var count: Int = 1
+						
+						// if the user is already in the database
+						if currentData.hasChild(atPath: self.userID!) {
+							count += userData[self.userID!] as! Int
+						}
+						
+						userData[self.userID!] = count
+						currentData.value = userData
+						return TransactionResult.success(withValue: currentData)
+					}
+					
+					return TransactionResult.success(withValue: currentData)
+				}
 			}
 		}
 	}
