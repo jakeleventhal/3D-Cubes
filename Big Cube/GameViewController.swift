@@ -20,7 +20,6 @@ class GameViewController: UIViewController {
 	
 	// set up Firebase variables
 	var ref: DatabaseReference?
-	var databaseHandle: DatabaseHandle?
 	
 	// set up variables for the scene
 	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
@@ -71,27 +70,6 @@ class GameViewController: UIViewController {
 		// add lights to the scene
 		addLights()
 		
-		// listen for updates
-		databaseHandle = ref?.child("remaining").observe(.childRemoved, with: {(snapshot) in
-			// retrieve the post
-			let key = snapshot.key
-			
-			if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
-				// reset the cube if necessary
-				if self.cubeNode.childNodes.count == 1 {
-					self.resetCube(scatterWinningTiles: false)
-				}
-				// remove the node from the cube
-				else {
-					nodeToDelete.removeFromParentNode()
-					
-					self.createExplosion(geometry: nodeToDelete.geometry!,
-										 position: nodeToDelete.presentation.position,
-										 rotation: nodeToDelete.presentation.rotation)
-				}
-			}
-		})
-		
 		// retrieve the SCNView
 		let scnView = self.view as! SCNView
 		
@@ -119,7 +97,7 @@ class GameViewController: UIViewController {
 		playBackgroundMusic()
 		
 		// retrieve the loaded state of the cube
-		databaseHandle = ref?.child("deleted").observe(.value, with: {(snapshot) in
+		ref?.child("cubies/deleted").queryOrderedByKey().observeSingleEvent(of: .value, with: {(snapshot) in
 			// retrieve all the keys
 			let deletedCubies = (snapshot.value as? [String : AnyObject] ?? [:]).keys
 			
@@ -137,6 +115,27 @@ class GameViewController: UIViewController {
 			
 			// fly in when finished
 			self.flyIn()
+		})
+		
+		// add listener for updates
+		ref?.child("cubies/remaining").observe(.childRemoved, with: {(snapshot) in
+			// retrieve the post
+			let key = snapshot.key
+			
+			if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
+				// reset the cube if necessary
+				if self.cubeNode.childNodes.count == 1 {
+					self.resetCube(scatterWinningTiles: false)
+				}
+					// remove the node from the cube
+				else {
+					nodeToDelete.removeFromParentNode()
+					
+					self.createExplosion(geometry: nodeToDelete.geometry!,
+										 position: nodeToDelete.presentation.position,
+										 rotation: nodeToDelete.presentation.rotation)
+				}
+			}
 		})
 	}
 	
@@ -228,10 +227,10 @@ class GameViewController: UIViewController {
 								 rotation: nodeToDelete.presentation.rotation)
 			
 			// remove the cubie from the remaining database
-			self.ref?.child("remaining").child(nodeToDelete.name!).removeValue()
+			self.ref?.child("cubies/remaining").child(nodeToDelete.name!).removeValue()
 			
 			// add the cubie to the deleted database
-			self.ref?.child("deleted").child(nodeToDelete.name!).setValue("0")
+			self.ref?.child("cubies/deleted").child(nodeToDelete.name!).setValue("0")
 			
 			// remove the node from the screen
 			nodeToDelete.removeFromParentNode()
@@ -388,12 +387,12 @@ class GameViewController: UIViewController {
 							// add each cubie name to the list of all names
 							cubieNames.append(cubieName)
 							if (scatterWinningTiles) {
-								self.ref?.child("remaining").child(cubieName).setValue(0)
+								self.ref?.child("cubies/remaining").child(cubieName).setValue(0)
 							}
 						}
 					}
 				}
-				self.ref?.child("deleted").removeValue()
+				self.ref?.child("cubies/deleted").removeValue()
 				
 				// if scatter should occur
 				if (scatterWinningTiles) {
@@ -420,7 +419,7 @@ class GameViewController: UIViewController {
 			let winnerName = cubieNames[randomIndex]
 			
 			// update the cash value for that tile
-			self.ref?.child("remaining").child(winnerName).setValue(1)
+			self.ref?.child("cubies/remaining").child(winnerName).setValue(1)
 			
 			// remove the winner from the list of all names
 			cubieNames.remove(at: randomIndex)
@@ -457,7 +456,7 @@ class GameViewController: UIViewController {
 				let result: AnyObject = hitResults[0]
 				
 				// deleting the face and posting to Firebase
-				self.ref?.child("remaining/" + result.node.name!).observeSingleEvent(of: .value, with: {(snapshot) in
+				self.ref?.child("cubies/remaining/" + result.node.name!).observeSingleEvent(of: .value, with: {(snapshot) in
 					
 					// retrieve the key
 					let key = snapshot.key
@@ -481,8 +480,8 @@ class GameViewController: UIViewController {
 						self.show(winAlert, sender: self)
 					}
 					
-					self.ref?.child("remaining").child(result.node.name!).removeValue()
-					self.ref?.child("deleted").child(result.node.name!).setValue(cashVal)
+					self.ref?.child("cubies/remaining").child(result.node.name!).removeValue()
+					self.ref?.child("cubies/deleted").child(result.node.name!).setValue(cashVal)
 					if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
 						// play the sound for breaking a cubie
 						self.playBreakSound()
