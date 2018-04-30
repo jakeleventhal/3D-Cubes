@@ -98,26 +98,7 @@ class GameViewController: UIViewController {
 		
 		playBackgroundMusic()
 		
-		// retrieve the loaded state of the cube
-		ref?.child("cubies/deleted").queryOrderedByKey().observeSingleEvent(of: .value, with: {(snapshot) in
-			// retrieve all the keys
-			let deletedCubies = (snapshot.value as? [String : AnyObject] ?? [:]).keys
-			
-			// delete each cubie
-			for cubie in deletedCubies {
-				if let nodeToDelete = self.cubeNode.childNode(withName: cubie, recursively: true) {
-					if self.cubeNode.childNodes.count == 1 {
-						self.resetCube(scatterWinningTiles: false)
-					}
-					else {
-						nodeToDelete.removeFromParentNode()
-					}
-				}
-			}
-			
-			// fly in when finished
-			self.flyIn()
-		})
+		retrieveCurrentState()
 		
 		// add listener for updates
 		ref?.child("cubies/remaining").observe(.childRemoved, with: {(snapshot) in
@@ -138,6 +119,30 @@ class GameViewController: UIViewController {
 										 rotation: nodeToDelete.presentation.rotation)
 				}
 			}
+		})
+	}
+	
+	// retreive the current state of the cube
+	func retrieveCurrentState() {
+		// retrieve the loaded state of the cube
+		ref?.child("cubies/deleted").queryOrderedByKey().observeSingleEvent(of: .value, with: {(snapshot) in
+			// retrieve all the keys
+			let deletedCubies = (snapshot.value as? [String : AnyObject] ?? [:]).keys
+			
+			// delete each cubie
+			for cubie in deletedCubies {
+				if let nodeToDelete = self.cubeNode.childNode(withName: cubie, recursively: true) {
+					if self.cubeNode.childNodes.count == 1 {
+						self.resetCube(scatterWinningTiles: false)
+					}
+					else {
+						nodeToDelete.removeFromParentNode()
+					}
+				}
+			}
+			
+			// fly in when finished
+			self.flyIn()
 		})
 	}
 	
