@@ -31,19 +31,14 @@ class GameViewController: UIViewController {
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	
 	// set up variables for audio
-	var breakSoundPlayer = AVAudioPlayer()
+	var noiseSoundPlayer = AVAudioPlayer()
 	var backgroundMusicPlayer = AVAudioPlayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		// set the background of the scene
-		scene.background.contents = [UIImage(named: "space.jpg") as UIImage?,
-									UIImage(named: "space.jpg") as UIImage?,
-									UIImage(named: "space.jpg") as UIImage?,
-									UIImage(named: "space.jpg") as UIImage?,
-									UIImage(named: "space.jpg") as UIImage?,
-									UIImage(named: "space.jpg") as UIImage?]
+		scene.background.contents = [#imageLiteral(resourceName: "space"), #imageLiteral(resourceName: "space"), #imageLiteral(resourceName: "space"), #imageLiteral(resourceName: "space"), #imageLiteral(resourceName: "space"), #imageLiteral(resourceName: "space")]
 		
 		// set the Firebase reference
 		ref = Database.database().reference()
@@ -121,22 +116,35 @@ class GameViewController: UIViewController {
 			}
 		})
 		
-		let menu = UIButton()
-		menu.backgroundColor = UIColor.white
-		menu.frame = CGRect(x: 50, y: scnView.frame.height-270, width: 178, height: 50)
-		menu.layer.cornerRadius = 10
-		menu.addTarget(self, action: #selector(buttonHeld(sender:)), for: UIControlEvents.touchDown)
-		menu.addTarget(self, action: #selector(buttonReleased(sender:)), for: UIControlEvents.touchUpInside)
-		
-		view.addSubview(menu)
-	}
-	
-	@objc func buttonHeld(sender: UIButton) {
-		sender.backgroundColor = UIColor.green
+		let menuButton = UIButton()
+		menuButton.setBackgroundImage(#imageLiteral(resourceName: "menu"), for: UIControlState.normal)
+		menuButton.alpha = 0.5
+		menuButton.frame = CGRect(x: 12, y: 22, width: 70, height: 70)
+		menuButton.layer.cornerRadius = 0.5 * menuButton.bounds.size.width
+		menuButton.addTarget(self, action: #selector(buttonReleased(sender:)), for: UIControlEvents.touchUpInside)
+
+		view.addSubview(menuButton)
 	}
 	
 	@objc func buttonReleased(sender: UIButton) {
-		sender.backgroundColor = UIColor.white
+		let menuSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Blop", ofType: "mp3")!)
+		
+		do {
+			// set up audio playback
+			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+			try AVAudioSession.sharedInstance().setActive(true)
+			
+			// play the sound
+			try self.noiseSoundPlayer = AVAudioPlayer(contentsOf: menuSound as URL)
+			self.noiseSoundPlayer.prepareToPlay()
+			self.noiseSoundPlayer.play()
+		} catch {
+			print(error)
+		}
+		
+		let newViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+		newViewController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+		self.present(newViewController, animated: true, completion: nil)
 	}
 	
 	// retreive the current state of the cube
@@ -572,9 +580,9 @@ class GameViewController: UIViewController {
 				try AVAudioSession.sharedInstance().setActive(true)
 				
 				// play the sound
-				try self.breakSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
-				self.breakSoundPlayer.prepareToPlay()
-				self.breakSoundPlayer.play()
+				try self.noiseSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
+				self.noiseSoundPlayer.prepareToPlay()
+				self.noiseSoundPlayer.play()
 			} catch {
 				print(error)
 			}
