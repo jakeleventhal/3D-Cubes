@@ -26,6 +26,7 @@
 		3DEA11731F2C05EB00461804 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DEA11711F2C05EB00461804 /* Main.storyboard */; };
 		3DEA11751F2C05EB00461804 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DEA11741F2C05EB00461804 /* Assets.xcassets */; };
 		3DEA11781F2C05EB00461804 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DEA11761F2C05EB00461804 /* LaunchScreen.storyboard */; };
+		3DFF6C9E2096FDD800B51495 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF6C9D2096FDD800B51495 /* MenuView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		3DEA11741F2C05EB00461804 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3DEA11771F2C05EB00461804 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3DEA11791F2C05EB00461804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3DFF6C9D2096FDD800B51495 /* MenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuView.xib; sourceTree = "<group>"; };
 		53ECC4CBDA784A1C57ABD872 /* Pods_Big_Cube.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Big_Cube.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E49B640C2FDC85DE0D9CE37A /* Pods-Big Cube.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Big Cube.release.xcconfig"; path = "Pods/Target Support Files/Pods-Big Cube/Pods-Big Cube.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,7 +86,6 @@
 			children = (
 				3D436FE7208B463400B95E72 /* AddFriendView.swift */,
 				3D436FE9208B464000B95E72 /* ProfileView.swift */,
-				3D436FEB208B465700B95E72 /* MenuView.swift */,
 				3D436FEF208B46FD00B95E72 /* FriendsView.swift */,
 				3D436FF1208B470D00B95E72 /* LeaderboardsView.swift */,
 			);
@@ -120,6 +121,8 @@
 				3D530F33209684210055D234 /* LoginViewController.swift */,
 				3DEA116F1F2C05EB00461804 /* GameViewController.swift */,
 				3DEA11711F2C05EB00461804 /* Main.storyboard */,
+				3DFF6C9D2096FDD800B51495 /* MenuView.xib */,
+				3D436FEB208B465700B95E72 /* MenuView.swift */,
 				3D3C896E2095E36B000280E9 /* Audio Files */,
 				3DEA11741F2C05EB00461804 /* Assets.xcassets */,
 				3DEA11761F2C05EB00461804 /* LaunchScreen.storyboard */,
@@ -217,6 +220,7 @@
 				3DEA116E1F2C05EB00461804 /* art.scnassets in Resources */,
 				3D3C89692095E355000280E9 /* Break 3.mp3 in Resources */,
 				3DEA11781F2C05EB00461804 /* LaunchScreen.storyboard in Resources */,
+				3DFF6C9E2096FDD800B51495 /* MenuView.xib in Resources */,
 				3D36C0BD1F2C0922004FD0A6 /* GoogleService-Info.plist in Resources */,
 				3DEA11751F2C05EB00461804 /* Assets.xcassets in Resources */,
 				3D3C896A2095E355000280E9 /* Background Music.mp3 in Resources */,

@@ -79,7 +79,7 @@ class GameViewController: UIViewController {
 		scnView.scene = scene
 		
 		// show statistics such as fps and timing information
-		scnView.showsStatistics = true
+		scnView.showsStatistics = false
 		
 		// configure the view
 		scnView.backgroundColor = UIColor.lightGray
@@ -120,6 +120,23 @@ class GameViewController: UIViewController {
 				}
 			}
 		})
+		
+		let menu = UIButton()
+		menu.backgroundColor = UIColor.white
+		menu.frame = CGRect(x: 50, y: scnView.frame.height-270, width: 178, height: 50)
+		menu.layer.cornerRadius = 10
+		menu.addTarget(self, action: #selector(buttonHeld(sender:)), for: UIControlEvents.touchDown)
+		menu.addTarget(self, action: #selector(buttonReleased(sender:)), for: UIControlEvents.touchUpInside)
+		
+		view.addSubview(menu)
+	}
+	
+	@objc func buttonHeld(sender: UIButton) {
+		sender.backgroundColor = UIColor.green
+	}
+	
+	@objc func buttonReleased(sender: UIButton) {
+		sender.backgroundColor = UIColor.white
 	}
 	
 	// retreive the current state of the cube
