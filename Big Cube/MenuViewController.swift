@@ -17,6 +17,12 @@ class MenuViewController: UIViewController {
 	@IBOutlet weak var usernameLabel: UILabel!
 	@IBOutlet weak var scoreLabel: UILabel!
 	
+	// constraints
+	@IBOutlet weak var friendsConstraint: NSLayoutConstraint!
+	@IBOutlet weak var leaderboardsConstraint: NSLayoutConstraint!
+	@IBOutlet weak var settingsConstraint: NSLayoutConstraint!
+	@IBOutlet weak var logoutConstraint: NSLayoutConstraint!
+	
 	let email: String! = Auth.auth().currentUser!.email
 	
 	@IBAction func dismissMenu(_ sender: Any) {
@@ -36,6 +42,9 @@ class MenuViewController: UIViewController {
 		// update the username label
 		usernameLabel.text = email
 		
+		// adjust the constraints to fit the screen
+		adjustConstraints()
+		
 		// update the score label
 		ref.child("users/\(userID!)").child("score").observeSingleEvent(of: .value) { (snapshot) in
 			if let score = snapshot.value as? Int {
@@ -43,6 +52,14 @@ class MenuViewController: UIViewController {
 			}
 		}
     }
+	
+	func adjustConstraints() {
+		let multiplier: CGFloat = UIScreen.main.bounds.height / 700
+		self.friendsConstraint.constant *= multiplier
+		self.leaderboardsConstraint.constant *= multiplier
+		self.settingsConstraint.constant *= multiplier
+		self.logoutConstraint.constant *= multiplier
+	}
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

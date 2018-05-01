@@ -96,7 +96,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="luB-sK-PqS">
-                                <rect key="frame" x="60" y="96" width="256" height="29.5"/>
+                                <rect key="frame" x="60" y="96" width="256" height="30"/>
                                 <attributedString key="attributedText">
                                     <fragment content="jakeleventhal@me.com">
                                         <attributes>
@@ -109,25 +109,80 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R4j-QU-Uf0" userLabel="Score Label">
-                                <rect key="frame" x="160.5" y="133" width="55" height="23"/>
+                                <rect key="frame" x="160" y="133" width="55" height="23"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjR-Aj-bEC" userLabel="Friends Button">
+                                <rect key="frame" x="131" y="186" width="112" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Friends">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mD-UK-m6Q" userLabel="Settings Button">
+                                <rect key="frame" x="125.5" y="354" width="124" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gO-9t-55y" userLabel="Logout Button">
+                                <rect key="frame" x="134.5" y="438" width="106" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="voo-ZN-CGJ">
+                                <rect key="frame" x="150" y="33" width="100" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="0.00046258820560000002" green="0.17038667839999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="39H-00-ADL" userLabel="Leaderboards Button">
+                                <rect key="frame" x="83" y="270" width="208" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Leaderboards">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="5mD-UK-m6Q" firstAttribute="top" secondItem="39H-00-ADL" secondAttribute="bottom" constant="30" id="0YA-Iy-A2R"/>
+                            <constraint firstItem="39H-00-ADL" firstAttribute="top" secondItem="jjR-Aj-bEC" secondAttribute="bottom" constant="30" id="4wC-MV-v1g"/>
+                            <constraint firstItem="0gO-9t-55y" firstAttribute="centerX" secondItem="xY9-rX-VoR" secondAttribute="centerX" id="5N4-eZ-dM6"/>
+                            <constraint firstItem="jjR-Aj-bEC" firstAttribute="centerX" secondItem="xY9-rX-VoR" secondAttribute="centerX" id="7JZ-LJ-Wu9"/>
                             <constraint firstItem="luB-sK-PqS" firstAttribute="top" secondItem="99l-NG-JWU" secondAttribute="bottom" constant="8" id="7hC-Q3-aO4"/>
                             <constraint firstItem="luB-sK-PqS" firstAttribute="centerX" secondItem="xY9-rX-VoR" secondAttribute="centerX" id="9Lw-Oc-cku"/>
                             <constraint firstItem="99l-NG-JWU" firstAttribute="top" secondItem="xY9-rX-VoR" secondAttribute="top" constant="16" id="Niu-O1-hYb"/>
+                            <constraint firstItem="39H-00-ADL" firstAttribute="centerX" secondItem="xY9-rX-VoR" secondAttribute="centerX" id="QwA-lH-mgC"/>
                             <constraint firstItem="R4j-QU-Uf0" firstAttribute="centerX" secondItem="xY9-rX-VoR" secondAttribute="centerX" id="T3B-YF-l6C"/>
+                            <constraint firstItem="0gO-9t-55y" firstAttribute="top" secondItem="5mD-UK-m6Q" secondAttribute="bottom" constant="30" id="X5n-uB-emO"/>
+                            <constraint firstItem="jjR-Aj-bEC" firstAttribute="top" secondItem="R4j-QU-Uf0" secondAttribute="bottom" constant="30" id="evt-WQ-y9K"/>
                             <constraint firstItem="99l-NG-JWU" firstAttribute="leading" secondItem="xY9-rX-VoR" secondAttribute="leading" constant="6" id="gxY-4Q-K3q"/>
                             <constraint firstItem="R4j-QU-Uf0" firstAttribute="top" secondItem="luB-sK-PqS" secondAttribute="bottom" constant="7" id="xyy-yv-89V"/>
+                            <constraint firstItem="5mD-UK-m6Q" firstAttribute="centerX" secondItem="xY9-rX-VoR" secondAttribute="centerX" id="zdG-1r-Brz"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="closeButton" destination="99l-NG-JWU" id="fBK-PA-uts"/>
+                        <outlet property="friendsConstraint" destination="evt-WQ-y9K" id="nqd-A5-C7f"/>
+                        <outlet property="leaderboardsConstraint" destination="4wC-MV-v1g" id="0B6-FE-vYk"/>
+                        <outlet property="logoutConstraint" destination="X5n-uB-emO" id="xu5-kK-Zia"/>
                         <outlet property="scoreLabel" destination="R4j-QU-Uf0" id="sLc-To-6bg"/>
+                        <outlet property="settingsConstraint" destination="0YA-Iy-A2R" id="Run-rY-rlU"/>
                         <outlet property="usernameLabel" destination="luB-sK-PqS" id="VU5-Ac-dl4"/>
                     </connections>
                 </viewController>
