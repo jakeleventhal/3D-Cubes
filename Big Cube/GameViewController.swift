@@ -31,7 +31,7 @@ class GameViewController: UIViewController {
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	
 	// set up variables for audio
-	var noiseSoundPlayer = AVAudioPlayer()
+	var breakSoundPlayer = AVAudioPlayer()
 	var backgroundMusicPlayer = AVAudioPlayer()
 	
 	override func viewDidLoad() {
@@ -76,8 +76,9 @@ class GameViewController: UIViewController {
 		// show statistics such as fps and timing information
 		scnView.showsStatistics = false
 		
-		// configure the view
-		scnView.backgroundColor = UIColor.lightGray
+		
+		// add menu button to the screen
+		addMenuButton()
 		
 		// add a tap gesture recognizer
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -115,33 +116,20 @@ class GameViewController: UIViewController {
 				}
 			}
 		})
-		
+	}
+	
+	func addMenuButton() {
 		let menuButton = UIButton()
 		menuButton.setBackgroundImage(#imageLiteral(resourceName: "menu"), for: UIControlState.normal)
 		menuButton.alpha = 0.5
-		menuButton.frame = CGRect(x: 12, y: 22, width: 70, height: 70)
+		menuButton.frame = CGRect(x: 12, y: 22, width: 60, height: 60)
 		menuButton.layer.cornerRadius = 0.5 * menuButton.bounds.size.width
 		menuButton.addTarget(self, action: #selector(buttonReleased(sender:)), for: UIControlEvents.touchUpInside)
-
+		
 		view.addSubview(menuButton)
 	}
 	
 	@objc func buttonReleased(sender: UIButton) {
-		let menuSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Blop", ofType: "mp3")!)
-		
-		do {
-			// set up audio playback
-			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-			try AVAudioSession.sharedInstance().setActive(true)
-			
-			// play the sound
-			try self.noiseSoundPlayer = AVAudioPlayer(contentsOf: menuSound as URL)
-			self.noiseSoundPlayer.prepareToPlay()
-			self.noiseSoundPlayer.play()
-		} catch {
-			print(error)
-		}
-		
 		let newViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
 		newViewController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
 		self.present(newViewController, animated: true, completion: nil)
@@ -580,9 +568,9 @@ class GameViewController: UIViewController {
 				try AVAudioSession.sharedInstance().setActive(true)
 				
 				// play the sound
-				try self.noiseSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
-				self.noiseSoundPlayer.prepareToPlay()
-				self.noiseSoundPlayer.play()
+				try self.breakSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
+				self.breakSoundPlayer.prepareToPlay()
+				self.breakSoundPlayer.play()
 			} catch {
 				print(error)
 			}
