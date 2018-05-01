@@ -53,8 +53,15 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 				let userID: String! = Auth.auth().currentUser?.uid
 				ref.child("users").observeSingleEvent(of: .value, with: { (snapshot) in
 					if !(snapshot.hasChild(userID)) {
-						ref.child("users").child(userID).child("score").setValue(0)
-						ref.child("users").child(userID).child("coins").setValue(0)
+						let databaseUser = ref.child("users").child(userID)
+						let authUser = Auth.auth().currentUser!
+						
+						databaseUser.child("email").setValue(authUser.email)
+						databaseUser.child("name").setValue(authUser.displayName)
+						databaseUser.child("score").setValue(0)
+						databaseUser.child("coins").setValue(0)
+						databaseUser.child("cashBalance").setValue(0)
+						databaseUser.child("cashTotal").setValue(0)
 					}
 				})
 				

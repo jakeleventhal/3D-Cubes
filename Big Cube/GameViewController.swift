@@ -481,20 +481,19 @@ class GameViewController: UIViewController {
 					// retrieve the cash value
 					let cashVal = (snapshot.value as? Double)!
 					
-					// display an alert if a user wins
+					// update user's cash if cash cube
 					if (cashVal > 0) {
-						let cashString = String(format: "$%.02f", cashVal)
-						
-						
-						let winAlert = UIAlertController(title: "Winner!",
-														 message: "You won \(cashString)!",
-														 preferredStyle: UIAlertControllerStyle(rawValue: 1)!)
-						
-						// add the dismissbutton to the win alert
-						winAlert.addAction(UIAlertAction(title: "Dismiss", style: .default) { (action:UIAlertAction!) in
-						})
-						
-						self.show(winAlert, sender: self)
+						ref.child("users").child(userID!).runTransactionBlock { (currentData: MutableData) -> TransactionResult in
+							if var userData = currentData.value as? [String: Any] {
+								userData["cashBalance"] = (userData["cashBalance"] as? Int)! + 1
+								userData["cashTotal"] = (userData["cashTotal"] as? Int)! + 1
+								
+								currentData.value = userData
+								return TransactionResult.success(withValue: currentData)
+							}
+							
+							return TransactionResult.success(withValue: currentData)
+						}
 					}
 					
 					ref.child("cubies/remaining").child(result.node.name!).removeValue()
