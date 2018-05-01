@@ -23,7 +23,7 @@ class MenuViewController: UIViewController {
 	@IBOutlet weak var settingsConstraint: NSLayoutConstraint!
 	@IBOutlet weak var logoutConstraint: NSLayoutConstraint!
 	
-	let email: String! = Auth.auth().currentUser!.email
+	let name: String! = Auth.auth().currentUser!.displayName
 	
 	@IBAction func dismissMenu(_ sender: Any) {
 		clickSound()
@@ -40,7 +40,7 @@ class MenuViewController: UIViewController {
 		clickSound()
 		
 		// update the username label
-		usernameLabel.text = email
+		usernameLabel.text = name
 		
 		// adjust the constraints to fit the screen
 		adjustConstraints()
