@@ -8,11 +8,16 @@
 
 import UIKit
 import AVFoundation
+import FirebaseAuth
 
 class MenuViewController: UIViewController {
 	
 	var menuSoundPlayer = AVAudioPlayer()
 	@IBOutlet weak var closeButton: UIButton!
+	@IBOutlet weak var usernameLabel: UILabel!
+	@IBOutlet weak var scoreLabel: UILabel!
+	
+	let email: String! = Auth.auth().currentUser!.email
 	
 	@IBAction func dismissMenu(_ sender: Any) {
 		clickSound()
@@ -27,6 +32,16 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 		clickSound()
+		
+		// update the username label
+		usernameLabel.text = email
+		
+		// update the score label
+		ref.child("users/\(userID!)").child("score").observeSingleEvent(of: .value) { (snapshot) in
+			if let score = snapshot.value as? Int {
+				self.scoreLabel.text = "Score: \(score)"
+			}
+		}
     }
 
     override func didReceiveMemoryWarning() {

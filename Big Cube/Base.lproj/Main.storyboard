@@ -84,19 +84,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="99l-NG-JWU">
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="99l-NG-JWU">
                                 <rect key="frame" x="6" y="16" width="72" height="72"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="3Ud-LH-LjF"/>
+                                    <constraint firstAttribute="height" constant="72" id="bxA-8D-njn"/>
+                                </constraints>
                                 <state key="normal" image="close"/>
                                 <connections>
                                     <action selector="dismissMenu:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="Y4p-qA-lfR"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="luB-sK-PqS">
+                                <rect key="frame" x="60" y="96" width="256" height="29.5"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="jakeleventhal@me.com">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="25" name=".SFNSDisplay"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R4j-QU-Uf0" userLabel="Score Label">
+                                <rect key="frame" x="160.5" y="133" width="55" height="23"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="luB-sK-PqS" firstAttribute="top" secondItem="99l-NG-JWU" secondAttribute="bottom" constant="8" id="7hC-Q3-aO4"/>
+                            <constraint firstItem="luB-sK-PqS" firstAttribute="centerX" secondItem="xY9-rX-VoR" secondAttribute="centerX" id="9Lw-Oc-cku"/>
+                            <constraint firstItem="99l-NG-JWU" firstAttribute="top" secondItem="xY9-rX-VoR" secondAttribute="top" constant="16" id="Niu-O1-hYb"/>
+                            <constraint firstItem="R4j-QU-Uf0" firstAttribute="centerX" secondItem="xY9-rX-VoR" secondAttribute="centerX" id="T3B-YF-l6C"/>
+                            <constraint firstItem="99l-NG-JWU" firstAttribute="leading" secondItem="xY9-rX-VoR" secondAttribute="leading" constant="6" id="gxY-4Q-K3q"/>
+                            <constraint firstItem="R4j-QU-Uf0" firstAttribute="top" secondItem="luB-sK-PqS" secondAttribute="bottom" constant="7" id="xyy-yv-89V"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="closeButton" destination="99l-NG-JWU" id="fBK-PA-uts"/>
+                        <outlet property="scoreLabel" destination="R4j-QU-Uf0" id="sLc-To-6bg"/>
+                        <outlet property="usernameLabel" destination="luB-sK-PqS" id="VU5-Ac-dl4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nf7-zF-Amr" userLabel="First Responder" sceneMemberID="firstResponder"/>
