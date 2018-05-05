@@ -30,9 +30,8 @@ class GameViewController: UIViewController {
 	var cubeNode: SCNNode!
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	
-	// set up variables for audio
+	// set up variables for the break sound
 	var breakSoundPlayer = AVAudioPlayer()
-	var backgroundMusicPlayer = AVAudioPlayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -88,8 +87,6 @@ class GameViewController: UIViewController {
 		// add a zoom gesture recognizer
 		let zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
 		scnView.addGestureRecognizer(zoomGesture)
-		
-		playBackgroundMusic()
 		
 		retrieveCurrentState()
 		
@@ -529,25 +526,6 @@ class GameViewController: UIViewController {
 					return TransactionResult.success(withValue: currentData)
 				}
 			}
-		}
-	}
-	
-	func playBackgroundMusic() {
-		// get background music
-		let backgroundMusic = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Background Music", ofType: "mp3")!)
-		
-		do {
-			// set up audio playback
-			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-			try AVAudioSession.sharedInstance().setActive(true)
-			
-			// play the background music
-			try self.backgroundMusicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
-			self.backgroundMusicPlayer.numberOfLoops = -1
-			self.backgroundMusicPlayer.prepareToPlay()
-			self.backgroundMusicPlayer.play()
-		} catch {
-			print(error)
 		}
 	}
 	

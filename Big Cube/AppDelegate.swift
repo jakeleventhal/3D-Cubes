@@ -23,13 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 		// configure Facebook
 		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
 		
-		// skip login screen if already logged into Facebook
-		if FBSDKAccessToken.current() != nil {
-			let gameViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
-			self.window?.rootViewController = gameViewController
-			self.window?.makeKeyAndVisible()
-		}
-		
 		return true
 	}
 	

@@ -9,18 +9,32 @@
 import UIKit
 import Firebase
 import FBSDKLoginKit
+import AVFoundation
 
 @available(iOS 11.0, *)
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 	
 	@IBOutlet weak var facebookLoginButton: FBSDKLoginButton!
 	
+	// set up variable for playing the background music
+	var backgroundMusicPlayer = AVAudioPlayer()
+	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		// set the permissions for Facebook
 		facebookLoginButton.delegate = self
 		facebookLoginButton.readPermissions = ["email", "public_profile"]
+		
+		// start the background music
+		playBackgroundMusic()
     }
+	
+	override func viewDidAppear(_ animated: Bool) {
+		// skip the login screen if the user is already logged in
+		if FBSDKAccessToken.current() != nil {
+			self.perform(#selector(navigateToGame), with: nil, afterDelay: 0.01)
+		}
+	}
 	
 	// the function for logging into Facebook
 	func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
@@ -71,9 +85,28 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 		}
 	}
 	
+	func playBackgroundMusic() {
+		// get background music
+		let backgroundMusic = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Background Music", ofType: "mp3")!)
+		
+		do {
+			// set up audio playback
+			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+			try AVAudioSession.sharedInstance().setActive(true)
+			
+			// play the background music
+			try self.backgroundMusicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
+			self.backgroundMusicPlayer.numberOfLoops = -1
+			self.backgroundMusicPlayer.prepareToPlay()
+			self.backgroundMusicPlayer.play()
+		} catch {
+			print(error)
+		}
+	}
+	
 	@IBAction func unwindToLogin(segue: UIStoryboardSegue) {}
 	
-	private func navigateToGame() {
+	@objc private func navigateToGame() {
 		let newViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
 		self.present(newViewController, animated: true, completion: nil)
 	}
