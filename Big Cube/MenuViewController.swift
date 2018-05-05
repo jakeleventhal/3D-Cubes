@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import FirebaseAuth
+import FBSDKLoginKit
 
 class MenuViewController: UIViewController {
 	
@@ -65,6 +66,11 @@ class MenuViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+	
+	@IBAction func logout(_ sender: Any) {
+		// logout of Facebook
+		FBSDKLoginManager().logOut()
+	}
 	
 	func clickSound() {
 		let menuSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Blop", ofType: "mp3")!)

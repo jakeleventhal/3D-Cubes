@@ -52,6 +52,7 @@
                     </view>
                     <connections>
                         <outlet property="facebookLoginButton" destination="bdi-Qh-Fx0" id="tTa-8A-Auj"/>
+                        <segue destination="BV1-FR-VrT" kind="presentation" identifier="loginToGame" id="ldy-ew-vxd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qu6-28-RAJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -67,10 +68,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </sceneKitView>
+                    <connections>
+                        <segue destination="rRp-Eg-fyu" kind="presentation" identifier="gameToMenu" id="Osc-QM-chx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="134" y="-25"/>
+            <point key="canvasLocation" x="143" y="-27"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="O0o-4w-8hl">
@@ -137,6 +141,10 @@
                                 <state key="normal" title="Logout">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="logout:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="PgC-LI-FeX"/>
+                                    <segue destination="7UI-Yo-daX" kind="unwind" identifier="menuToLogin" unwindAction="unwindToLoginWithSegue:" id="UAJ-H7-CJj"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="39H-00-ADL" userLabel="Leaderboards Button">
                                 <rect key="frame" x="83" y="270" width="208" height="54"/>
@@ -176,6 +184,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nf7-zF-Amr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="7UI-Yo-daX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1061.5999999999999" y="-27.436281859070466"/>
         </scene>

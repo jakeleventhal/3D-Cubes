@@ -71,6 +71,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 		}
 	}
 	
+	@IBAction func unwindToLogin(segue: UIStoryboardSegue) {}
+	
 	private func navigateToGame() {
 		let newViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
 		self.present(newViewController, animated: true, completion: nil)
