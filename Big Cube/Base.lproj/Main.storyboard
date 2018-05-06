@@ -127,7 +127,6 @@
                                 </state>
                                 <connections>
                                     <action selector="goToFriends:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="NFY-ia-T7p"/>
-                                    <segue destination="gYL-UF-Myh" kind="presentation" modalTransitionStyle="crossDissolve" id="i8v-YR-YRP"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mD-UK-m6Q" userLabel="Settings Button">
