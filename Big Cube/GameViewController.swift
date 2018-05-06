@@ -475,26 +475,7 @@ class GameViewController: UIViewController {
 					// retrieve the key
 					let key = snapshot.key
 					
-					// retrieve the cash value
-					let cashVal = (snapshot.value as? Double)!
-					
-					// update user's cash if cash cube
-					if (cashVal > 0) {
-						ref.child("users").child(userID!).runTransactionBlock { (currentData: MutableData) -> TransactionResult in
-							if var userData = currentData.value as? [String: Any] {
-								userData["cashBalance"] = (userData["cashBalance"] as? Int)! + 1
-								userData["cashTotal"] = (userData["cashTotal"] as? Int)! + 1
-								
-								currentData.value = userData
-								return TransactionResult.success(withValue: currentData)
-							}
-							
-							return TransactionResult.success(withValue: currentData)
-						}
-					}
-					
 					ref.child("cubies/remaining").child(result.node.name!).removeValue()
-					ref.child("cubies/deleted").child(result.node.name!).setValue(cashVal)
 					if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
 						// play the sound for breaking a cubie
 						self.playBreakSound()
@@ -510,6 +491,26 @@ class GameViewController: UIViewController {
 							
 							nodeToDelete.removeFromParentNode()
 						}
+					}
+					
+					// retrieve the cash value
+					if let cashVal = snapshot.value as? Double {
+						// update user's cash if cash cube
+						if cashVal > 0 {
+							ref.child("users").child(userID!).runTransactionBlock { (currentData: MutableData) -> TransactionResult in
+								if var userData = currentData.value as? [String: Any] {
+									userData["cashBalance"] = (userData["cashBalance"] as? Int)! + 1
+									userData["cashTotal"] = (userData["cashTotal"] as? Int)! + 1
+									
+									currentData.value = userData
+									return TransactionResult.success(withValue: currentData)
+								}
+								
+								return TransactionResult.success(withValue: currentData)
+							}
+						}
+						
+						ref.child("cubies/deleted").child(result.node.name!).setValue(cashVal)
 					}
 				})
 				
