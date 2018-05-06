@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		2B4DCC51BAE0136F52D3D1AD /* Pods_Big_Cube.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53ECC4CBDA784A1C57ABD872 /* Pods_Big_Cube.framework */; };
 		3D36C0BD1F2C0922004FD0A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D36C0BC1F2C0922004FD0A6 /* GoogleService-Info.plist */; };
+		3D39BA54209E7A6300F2541D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D39BA53209E7A6300F2541D /* SettingsViewController.swift */; };
+		3D39BA56209E7D5900F2541D /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D39BA55209E7D5900F2541D /* FriendsViewController.swift */; };
+		3D39BA58209E7D6300F2541D /* LeaderboardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D39BA57209E7D6200F2541D /* LeaderboardsViewController.swift */; };
 		3D3C89692095E355000280E9 /* Break 3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D3C89642095E355000280E9 /* Break 3.mp3 */; };
 		3D3C896A2095E355000280E9 /* Background Music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D3C89652095E355000280E9 /* Background Music.mp3 */; };
 		3D3C896B2095E355000280E9 /* Break 1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3D3C89662095E355000280E9 /* Break 1.mp3 */; };
@@ -32,6 +35,9 @@
 /* Begin PBXFileReference section */
 		03AE0BE0DE66F367854B0828 /* Pods-Big Cube.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Big Cube.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Big Cube/Pods-Big Cube.debug.xcconfig"; sourceTree = "<group>"; };
 		3D36C0BC1F2C0922004FD0A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3D39BA53209E7A6300F2541D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		3D39BA55209E7D5900F2541D /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		3D39BA57209E7D6200F2541D /* LeaderboardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsViewController.swift; sourceTree = "<group>"; };
 		3D3C89642095E355000280E9 /* Break 3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Break 3.mp3"; sourceTree = "<group>"; };
 		3D3C89652095E355000280E9 /* Background Music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Background Music.mp3"; sourceTree = "<group>"; };
 		3D3C89662095E355000280E9 /* Break 1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Break 1.mp3"; sourceTree = "<group>"; };
@@ -122,6 +128,9 @@
 				3D530F33209684210055D234 /* LoginViewController.swift */,
 				3DEA116F1F2C05EB00461804 /* GameViewController.swift */,
 				3DEA11711F2C05EB00461804 /* Main.storyboard */,
+				3D39BA55209E7D5900F2541D /* FriendsViewController.swift */,
+				3D39BA57209E7D6200F2541D /* LeaderboardsViewController.swift */,
+				3D39BA53209E7A6300F2541D /* SettingsViewController.swift */,
 				3DFF6C9F209709E400B51495 /* MenuViewController.swift */,
 				3D3C896E2095E36B000280E9 /* Audio Files */,
 				3DEA11741F2C05EB00461804 /* Assets.xcassets */,
@@ -294,10 +303,13 @@
 				3DEA11701F2C05EB00461804 /* GameViewController.swift in Sources */,
 				3D436FF2208B470D00B95E72 /* LeaderboardsView.swift in Sources */,
 				3D530F34209684210055D234 /* LoginViewController.swift in Sources */,
+				3D39BA58209E7D6300F2541D /* LeaderboardsViewController.swift in Sources */,
 				3D436FEA208B464000B95E72 /* ProfileView.swift in Sources */,
 				3D436FE8208B463400B95E72 /* AddFriendView.swift in Sources */,
+				3D39BA56209E7D5900F2541D /* FriendsViewController.swift in Sources */,
 				3DEA116C1F2C05EB00461804 /* AppDelegate.swift in Sources */,
 				3DFF6CA0209709E400B51495 /* MenuViewController.swift in Sources */,
+				3D39BA54209E7A6300F2541D /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

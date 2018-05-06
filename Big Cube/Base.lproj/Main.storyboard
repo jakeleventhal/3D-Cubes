@@ -125,6 +125,10 @@
                                 <state key="normal" title="Friends">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="goToFriends:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="NFY-ia-T7p"/>
+                                    <segue destination="gYL-UF-Myh" kind="presentation" modalTransitionStyle="crossDissolve" id="i8v-YR-YRP"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mD-UK-m6Q" userLabel="Settings Button">
                                 <rect key="frame" x="125.5" y="354" width="124" height="54"/>
@@ -133,6 +137,10 @@
                                 <state key="normal" title="Settings">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="goToSettings:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="H5M-vo-oOw"/>
+                                    <segue destination="6dE-aH-NO8" kind="presentation" modalTransitionStyle="crossDissolve" id="tt4-bp-GTd"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gO-9t-55y" userLabel="Logout Button">
                                 <rect key="frame" x="134.5" y="438" width="106" height="54"/>
@@ -153,6 +161,10 @@
                                 <state key="normal" title="Leaderboards">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="goToLeaderboards:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="aDM-eW-aUw"/>
+                                    <segue destination="umy-XA-rjE" kind="presentation" modalTransitionStyle="crossDissolve" id="YDJ-Rd-w5n"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -188,8 +200,117 @@
             </objects>
             <point key="canvasLocation" x="1061.5999999999999" y="-27.436281859070466"/>
         </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="lHL-lN-8Bw">
+            <objects>
+                <viewController id="6dE-aH-NO8" customClass="SettingsViewController" customModule="Big_Cube" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1eQ-9n-WjX"/>
+                        <viewControllerLayoutGuide type="bottom" id="j9G-HS-S2w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JKP-wX-RAl">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tdd-ln-oxK">
+                                <rect key="frame" x="13" y="23" width="58" height="58"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="58" id="I6C-iE-iUp"/>
+                                    <constraint firstAttribute="height" constant="58" id="qFE-hJ-AB5"/>
+                                </constraints>
+                                <state key="normal" image="back"/>
+                                <connections>
+                                    <action selector="back:" destination="6dE-aH-NO8" eventType="touchUpInside" id="jP7-0E-P61"/>
+                                    <action selector="dismissMenu:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="URP-o0-HNI"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="tdd-ln-oxK" firstAttribute="top" secondItem="JKP-wX-RAl" secondAttribute="top" constant="23" id="DtZ-ca-Ucu"/>
+                            <constraint firstItem="tdd-ln-oxK" firstAttribute="leading" secondItem="JKP-wX-RAl" secondAttribute="leading" constant="13" id="iPD-1u-isq"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="slO-V8-p9S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1962" y="456"/>
+        </scene>
+        <!--Friends View Controller-->
+        <scene sceneID="rjI-MX-xKB">
+            <objects>
+                <viewController id="gYL-UF-Myh" customClass="FriendsViewController" customModule="Big_Cube" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2GQ-2z-qfw"/>
+                        <viewControllerLayoutGuide type="bottom" id="ets-0s-TXW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="E1M-sK-sTn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u8d-5H-jRz">
+                                <rect key="frame" x="13" y="23" width="58" height="58"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="58" id="75t-Rv-C6h"/>
+                                    <constraint firstAttribute="width" constant="58" id="Bpv-ck-3E5"/>
+                                </constraints>
+                                <state key="normal" image="back"/>
+                                <connections>
+                                    <action selector="back:" destination="gYL-UF-Myh" eventType="touchUpInside" id="dbe-oY-UsI"/>
+                                    <action selector="dismissMenu:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="WlO-Jf-anK"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="u8d-5H-jRz" firstAttribute="leading" secondItem="E1M-sK-sTn" secondAttribute="leading" constant="13" id="dSN-c8-S0l"/>
+                            <constraint firstItem="u8d-5H-jRz" firstAttribute="top" secondItem="E1M-sK-sTn" secondAttribute="top" constant="23" id="vm6-Pi-ndB"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B9e-OQ-eqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1961" y="-422"/>
+        </scene>
+        <!--Leaderboards View Controller-->
+        <scene sceneID="C0n-Bm-pol">
+            <objects>
+                <viewController id="umy-XA-rjE" customClass="LeaderboardsViewController" customModule="Big_Cube" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sCW-Tp-57i"/>
+                        <viewControllerLayoutGuide type="bottom" id="lUK-6g-mLp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7WE-wJ-Ino">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TMb-ze-acF">
+                                <rect key="frame" x="13" y="23" width="58" height="58"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="58" id="42s-7P-Ety"/>
+                                    <constraint firstAttribute="height" constant="58" id="62o-wL-NZs"/>
+                                </constraints>
+                                <state key="normal" image="back"/>
+                                <connections>
+                                    <action selector="back:" destination="umy-XA-rjE" eventType="touchUpInside" id="koC-z5-1GQ"/>
+                                    <action selector="dismissMenu:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="vpP-Lh-k6N"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="TMb-ze-acF" firstAttribute="top" secondItem="7WE-wJ-Ino" secondAttribute="top" constant="23" id="VEP-i1-Sc7"/>
+                            <constraint firstItem="TMb-ze-acF" firstAttribute="leading" secondItem="7WE-wJ-Ino" secondAttribute="leading" constant="13" id="W3T-q3-690"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lfJ-bA-GyG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2754" y="-27"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="back" width="512" height="512"/>
         <image name="close" width="128" height="128"/>
     </resources>
 </document>

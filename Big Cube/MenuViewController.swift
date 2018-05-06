@@ -11,9 +11,10 @@ import AVFoundation
 import FirebaseAuth
 import FBSDKLoginKit
 
+var menuSoundPlayer = AVAudioPlayer()
+
 class MenuViewController: UIViewController {
 	
-	var menuSoundPlayer = AVAudioPlayer()
 	@IBOutlet weak var closeButton: UIButton!
 	@IBOutlet weak var usernameLabel: UILabel!
 	@IBOutlet weak var scoreLabel: UILabel!
@@ -61,31 +62,38 @@ class MenuViewController: UIViewController {
 		self.settingsConstraint.constant *= multiplier
 		self.logoutConstraint.constant *= multiplier
 	}
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+	
+	@IBAction func goToFriends(_ sender: Any) {
+		clickSound()
+	}
+	
+	@IBAction func goToLeaderboards(_ sender: Any) {
+		clickSound()
+	}
+	
+	@IBAction func goToSettings(_ sender: Any) {
+		clickSound()
+	}
 	
 	@IBAction func logout(_ sender: Any) {
 		// logout of Facebook
 		FBSDKLoginManager().logOut()
 	}
+}
+
+func clickSound() {
+	let menuSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Blop", ofType: "mp3")!)
 	
-	func clickSound() {
-		let menuSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Blop", ofType: "mp3")!)
+	do {
+		// set up audio playback
+		try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+		try AVAudioSession.sharedInstance().setActive(true)
 		
-		do {
-			// set up audio playback
-			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-			try AVAudioSession.sharedInstance().setActive(true)
-			
-			// play the sound
-			try self.menuSoundPlayer = AVAudioPlayer(contentsOf: menuSound as URL)
-			self.menuSoundPlayer.prepareToPlay()
-			self.menuSoundPlayer.play()
-		} catch {
-			print(error)
-		}
+		// play the sound
+		try menuSoundPlayer = AVAudioPlayer(contentsOf: menuSound as URL)
+		menuSoundPlayer.prepareToPlay()
+		menuSoundPlayer.play()
+	} catch {
+		print(error)
 	}
 }
