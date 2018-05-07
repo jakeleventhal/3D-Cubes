@@ -212,8 +212,10 @@ class GameViewController: UIViewController {
 	@objc func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
 		// retrieve the position and angle
 		let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
-		let x = Float(translation.x)
-		let y = Float(-translation.y)
+		
+		// multiply x and y values by 0.75 to reduce pan sensitivity
+		let x = Float(translation.x) * 0.75
+		let y = Float(-translation.y) * 0.75
 		let anglePan = sqrt(pow(x, 2) + pow(y , 2)) * (Float)(Double.pi) / 180
 		
 		// update the cube's rotation
