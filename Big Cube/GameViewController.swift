@@ -135,7 +135,7 @@ class GameViewController: UIViewController {
 	func retrieveCurrentState() {
 		// retrieve the loaded state of the cube
 		ref.child("cubies/deleted").queryOrderedByKey().observeSingleEvent(of: .value, with: { (snapshot) in
-			// retrieve all the keys
+			// retrieve all the deleted cubies
 			let deletedCubies = (snapshot.value as? [String : AnyObject] ?? [:]).keys
 			
 			// delete each cubie
