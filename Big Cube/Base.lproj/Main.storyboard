@@ -127,6 +127,7 @@
                                 </state>
                                 <connections>
                                     <action selector="goToFriends:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="NFY-ia-T7p"/>
+                                    <segue destination="gYL-UF-Myh" kind="presentation" modalTransitionStyle="crossDissolve" id="Jlk-kd-OHD"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mD-UK-m6Q" userLabel="Settings Button">
@@ -233,7 +234,10 @@
                                 <rect key="frame" x="22.5" y="149" width="330" height="454"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJC-qR-wJV">
-                                        <rect key="frame" x="56.5" y="164" width="216" height="46"/>
+                                        <rect key="frame" x="32" y="164" width="266" height="46"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="266" id="QOv-DJ-JlR"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Menu Sounds: On">
@@ -244,7 +248,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LKn-QK-lEd">
-                                        <rect key="frame" x="103" y="36" width="123" height="46"/>
+                                        <rect key="frame" x="79.5" y="36" width="170" height="46"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="170" id="OuL-5k-oKG"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Music: On">
@@ -255,7 +262,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k6X-I7-raj">
-                                        <rect key="frame" x="57" y="100" width="216" height="46"/>
+                                        <rect key="frame" x="37" y="100" width="256" height="46"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="256" id="icT-hW-Eoe"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Break Sounds: On">
@@ -289,6 +299,11 @@
                             <constraint firstItem="So0-tx-aIF" firstAttribute="top" secondItem="srP-Wx-3W5" secondAttribute="bottom" constant="16" id="vPb-un-1ZI"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="breakSoundsButton" destination="k6X-I7-raj" id="qa4-ZC-8Wl"/>
+                        <outlet property="menuSoundsButton" destination="WJC-qR-wJV" id="ei1-Rt-RYu"/>
+                        <outlet property="musicSoundsButton" destination="LKn-QK-lEd" id="ZX9-4g-d69"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="slO-V8-p9S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

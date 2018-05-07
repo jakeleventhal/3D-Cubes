@@ -19,12 +19,16 @@ var musicOn = false
 var breakSoundsOn = true
 var menuSoundsOn = true
 
+// set up defaults for settings
+let defaults = UserDefaults.standard
+
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 	
 	@IBOutlet weak var facebookLoginButton: FBSDKLoginButton!
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
 		// set the permissions for Facebook
 		facebookLoginButton.delegate = self
 		facebookLoginButton.readPermissions = ["email", "public_profile"]
@@ -58,8 +62,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 	}
 	
 	func handleSettings() {
-		let defaults = UserDefaults.standard
-		
 		if defaults.value(forKey: "settingsInitialized") != nil {
 			// if background music is supposed to be off
 			if (defaults.value(forKey: "musicOn") as! Bool) {
@@ -74,7 +76,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 			
 			// if menu sounds are supposed to be off
 			if !(defaults.value(forKey: "menuSoundsOn") as! Bool) {
-				menuSoundPlayer.volume = 0
 				menuSoundsOn = false
 			}
 		} else {
@@ -156,7 +157,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 			try musicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
 			musicPlayer.numberOfLoops = -1
 			musicPlayer.prepareToPlay()
-			musicPlayer.volume = 0
 			musicPlayer.play()
 		} catch {
 			print(error)
