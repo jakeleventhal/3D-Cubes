@@ -479,19 +479,16 @@ class GameViewController: UIViewController {
 					
 					ref.child("cubies/remaining").child(result.node.name!).removeValue()
 					if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
-						// play the sound for breaking a cubie
+						// remove the cubie from the cube
+						nodeToDelete.removeFromParentNode()
 						self.playBreakSound()
+						self.createExplosion(geometry: nodeToDelete.geometry!,
+											 position: nodeToDelete.presentation.position,
+											 rotation: nodeToDelete.presentation.rotation)
 						
 						// if cube needs to be reset
-						if self.cubeNode.childNodes.count == 1 {
+						if self.cubeNode.childNodes.count == 0 {
 							self.resetCube(scatterWinningTiles: true)
-						}
-						else {
-							self.createExplosion(geometry: nodeToDelete.geometry!,
-												 position: nodeToDelete.presentation.position,
-												 rotation: nodeToDelete.presentation.rotation)
-							
-							nodeToDelete.removeFromParentNode()
 						}
 					}
 					
