@@ -11,8 +11,14 @@ import Firebase
 import FBSDKLoginKit
 import AVFoundation
 
-// set up variable for playing the background music
-var backgroundMusicPlayer = AVAudioPlayer()
+// set up variable for playing audio
+var musicPlayer = AVAudioPlayer()
+var breakSoundPlayer = AVAudioPlayer()
+var menuSoundPlayer = AVAudioPlayer()
+
+var musicOn = false
+var breakSoundsOn = true
+var menuSoundsOn = true
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 	
@@ -24,36 +30,59 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 		facebookLoginButton.delegate = self
 		facebookLoginButton.readPermissions = ["email", "public_profile"]
 		
-		// start the background music
-		playBackgroundMusic()
+		// set up audio
+		setUpAudio()
 		
 		// handle settings
 		handleSettings()
     }
 	
+	func setUpAudio() {
+		setUpBackgroundMusic()
+		setUpMenuSounds()
+	}
+	
+	func setUpMenuSounds() {
+		let menuSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Blop", ofType: "mp3")!)
+		
+		do {
+			// set up audio playback
+			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+			try AVAudioSession.sharedInstance().setActive(true)
+			
+			// prepare for playing
+			try menuSoundPlayer = AVAudioPlayer(contentsOf: menuSound as URL)
+			menuSoundPlayer.prepareToPlay()
+		} catch {
+			print(error)
+		}
+	}
+	
 	func handleSettings() {
 		let defaults = UserDefaults.standard
 		
-		let settingsInitialized = defaults.bool(forKey: "settingsInitialized")
-		if settingsInitialized {
+		if defaults.value(forKey: "settingsInitialized") != nil {
 			// if background music is supposed to be off
-			if !(defaults.value(forKey: "musicOn") as! Bool) {
-				backgroundMusicPlayer.volume = 0
+			if (defaults.value(forKey: "musicOn") as! Bool) {
+				musicPlayer.volume = 1
+				musicOn = true
 			}
 			
 			// if break sounds are supposed to be off
 			if !(defaults.value(forKey: "breakSoundsOn") as! Bool) {
-				breakSoundPlayer.volume = 0
+				breakSoundsOn = false
 			}
 			
 			// if menu sounds are supposed to be off
 			if !(defaults.value(forKey: "menuSoundsOn") as! Bool) {
 				menuSoundPlayer.volume = 0
+				menuSoundsOn = false
 			}
 		} else {
 			// initialize settings
 			defaults.set(true, forKey: "settingsInitialized")
 			defaults.set(true, forKey: "musicOn")
+			musicPlayer.volume = 1
 			defaults.set(true, forKey: "breakSoundsOn")
 			defaults.set(true, forKey: "menuSoundsOn")
 		}
@@ -115,7 +144,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 		}
 	}
 	
-	func playBackgroundMusic() {
+	func setUpBackgroundMusic() {
 		// get background music
 		let backgroundMusic = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Background Music", ofType: "mp3")!)
 		
@@ -125,10 +154,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 			try AVAudioSession.sharedInstance().setActive(true)
 			
 			// play the background music
-			try backgroundMusicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
-			backgroundMusicPlayer.numberOfLoops = -1
-			backgroundMusicPlayer.prepareToPlay()
-			backgroundMusicPlayer.play()
+			try musicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
+			musicPlayer.numberOfLoops = -1
+			musicPlayer.prepareToPlay()
+			musicPlayer.volume = 0
+			musicPlayer.play()
 		} catch {
 			print(error)
 		}

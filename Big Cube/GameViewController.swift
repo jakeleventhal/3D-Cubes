@@ -18,9 +18,6 @@ import FBSDKCoreKit
 var ref: DatabaseReference = Database.database().reference()
 let userID: String! = Auth.auth().currentUser!.uid
 
-// set up variables for the break sound
-var breakSoundPlayer = AVAudioPlayer()
-
 class GameViewController: UIViewController {
 	// configuration
 	let cubiesPerFace: Double = 100
@@ -538,23 +535,25 @@ class GameViewController: UIViewController {
 	}
 	
 	func playBreakSound() {
-		DispatchQueue.global(qos: .background).async {
-			// get break audio sound
-			let glassSoundNumber = arc4random_uniform(4) + 1
-			let resourceName = "Break \(glassSoundNumber)"
-			let breakSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: resourceName, ofType: "mp3")!)
-			
-			do {
-				// set up audio playback
-				try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-				try AVAudioSession.sharedInstance().setActive(true)
+		if breakSoundsOn {
+			DispatchQueue.global(qos: .background).async {
+				// get break audio sound
+				let glassSoundNumber = arc4random_uniform(4) + 1
+				let resourceName = "Break \(glassSoundNumber)"
+				let breakSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: resourceName, ofType: "mp3")!)
 				
-				// play the sound
-				try breakSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
-				breakSoundPlayer.prepareToPlay()
-				breakSoundPlayer.play()
-			} catch {
-				print(error)
+				do {
+					// set up audio playback
+					try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+					try AVAudioSession.sharedInstance().setActive(true)
+					
+					// play the sound
+					try breakSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
+					breakSoundPlayer.prepareToPlay()
+					breakSoundPlayer.play()
+				} catch {
+					print(error)
+				}
 			}
 		}
 	}

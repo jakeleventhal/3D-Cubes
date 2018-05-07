@@ -11,8 +11,6 @@ import AVFoundation
 import FirebaseAuth
 import FBSDKLoginKit
 
-var menuSoundPlayer = AVAudioPlayer()
-
 class MenuViewController: UIViewController {
 	
 	@IBOutlet weak var closeButton: UIButton!
@@ -82,18 +80,7 @@ class MenuViewController: UIViewController {
 }
 
 func clickSound() {
-	let menuSound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Blop", ofType: "mp3")!)
-	
-	do {
-		// set up audio playback
-		try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-		try AVAudioSession.sharedInstance().setActive(true)
-		
-		// play the sound
-		try menuSoundPlayer = AVAudioPlayer(contentsOf: menuSound as URL)
-		menuSoundPlayer.prepareToPlay()
+	if menuSoundsOn {
 		menuSoundPlayer.play()
-	} catch {
-		print(error)
 	}
 }

@@ -295,14 +295,8 @@
                                     <action selector="dismissMenu:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="vpP-Lh-k6N"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaderboards" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYC-jS-DYb">
-                                <rect key="frame" x="84" y="98" width="207.5" height="42"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JFv-u9-ejC">
-                                <rect key="frame" x="0.0" y="156" width="375" height="511"/>
+                                <rect key="frame" x="0.0" y="149" width="375" height="518"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -343,17 +337,23 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaderboards" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYC-jS-DYb">
+                                <rect key="frame" x="84" y="91" width="207.5" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="rYC-jS-DYb" firstAttribute="centerX" secondItem="7WE-wJ-Ino" secondAttribute="centerX" id="Ny2-N3-qaQ"/>
                             <constraint firstItem="JFv-u9-ejC" firstAttribute="centerX" secondItem="7WE-wJ-Ino" secondAttribute="centerX" id="OAa-TK-q07"/>
+                            <constraint firstItem="rYC-jS-DYb" firstAttribute="top" secondItem="TMb-ze-acF" secondAttribute="bottom" constant="10" id="VBG-yC-ENy"/>
                             <constraint firstItem="TMb-ze-acF" firstAttribute="top" secondItem="7WE-wJ-Ino" secondAttribute="top" constant="23" id="VEP-i1-Sc7"/>
                             <constraint firstItem="TMb-ze-acF" firstAttribute="leading" secondItem="7WE-wJ-Ino" secondAttribute="leading" constant="13" id="W3T-q3-690"/>
                             <constraint firstAttribute="trailing" secondItem="JFv-u9-ejC" secondAttribute="trailing" id="ZYU-g1-x1M"/>
                             <constraint firstItem="JFv-u9-ejC" firstAttribute="leading" secondItem="7WE-wJ-Ino" secondAttribute="leading" id="leX-4i-bsb"/>
                             <constraint firstItem="JFv-u9-ejC" firstAttribute="top" secondItem="rYC-jS-DYb" secondAttribute="bottom" constant="16" id="mYp-TK-1mB"/>
-                            <constraint firstItem="rYC-jS-DYb" firstAttribute="top" secondItem="sCW-Tp-57i" secondAttribute="bottom" constant="78" id="uLz-DY-iTe"/>
                             <constraint firstItem="lUK-6g-mLp" firstAttribute="top" secondItem="JFv-u9-ejC" secondAttribute="bottom" id="y4y-9d-7is"/>
                         </constraints>
                     </view>
