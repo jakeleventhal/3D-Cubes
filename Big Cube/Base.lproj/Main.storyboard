@@ -296,13 +296,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaderboards" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYC-jS-DYb">
-                                <rect key="frame" x="84" y="108" width="207.5" height="42"/>
+                                <rect key="frame" x="84" y="98" width="207.5" height="42"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="35"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JFv-u9-ejC">
-                                <rect key="frame" x="0.0" y="166" width="375" height="501"/>
+                                <rect key="frame" x="0.0" y="156" width="375" height="511"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -353,7 +353,7 @@
                             <constraint firstAttribute="trailing" secondItem="JFv-u9-ejC" secondAttribute="trailing" id="ZYU-g1-x1M"/>
                             <constraint firstItem="JFv-u9-ejC" firstAttribute="leading" secondItem="7WE-wJ-Ino" secondAttribute="leading" id="leX-4i-bsb"/>
                             <constraint firstItem="JFv-u9-ejC" firstAttribute="top" secondItem="rYC-jS-DYb" secondAttribute="bottom" constant="16" id="mYp-TK-1mB"/>
-                            <constraint firstItem="rYC-jS-DYb" firstAttribute="top" secondItem="sCW-Tp-57i" secondAttribute="bottom" constant="88" id="uLz-DY-iTe"/>
+                            <constraint firstItem="rYC-jS-DYb" firstAttribute="top" secondItem="sCW-Tp-57i" secondAttribute="bottom" constant="78" id="uLz-DY-iTe"/>
                             <constraint firstItem="lUK-6g-mLp" firstAttribute="top" secondItem="JFv-u9-ejC" secondAttribute="bottom" id="y4y-9d-7is"/>
                         </constraints>
                     </view>

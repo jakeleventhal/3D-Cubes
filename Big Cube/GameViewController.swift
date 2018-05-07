@@ -457,41 +457,42 @@ class GameViewController: UIViewController {
 	}
 	
 	@objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
-		DispatchQueue.global(qos: .userInitiated).async {
-			// retrieve the SCNView
-			let scnView = self.view as! SCNView
+		// retrieve the SCNView
+		let scnView = self.view as! SCNView
+		
+		// check what nodes are tapped
+		let p = gestureRecognizer.location(in: scnView)
+		
+		let hitResults = scnView.hitTest(p, options: [:])
+		// check that user clicked on at least one object
+		if hitResults.count > 0 && hitResults[0].node.name != "base" {
 			
-			// check what nodes are tapped
-			let p = gestureRecognizer.location(in: scnView)
+			// retrieved the first clicked object
+			let result: AnyObject = hitResults[0]
 			
-			let hitResults = scnView.hitTest(p, options: [:])
-			// check that user clicked on at least one object
-			if hitResults.count > 0 && hitResults[0].node.name != "base" {
+			// deleting the face and posting to Firebase
+			ref.child("cubies/remaining/" + result.node.name!).observeSingleEvent(of: .value, with: { (snapshot) in
 				
-				// retrieved the first clicked object
-				let result: AnyObject = hitResults[0]
+				// retrieve the key
+				let key = snapshot.key
 				
-				// deleting the face and posting to Firebase
-				ref.child("cubies/remaining/" + result.node.name!).observeSingleEvent(of: .value, with: { (snapshot) in
+				ref.child("cubies/remaining").child(result.node.name!).removeValue()
+				if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
+					// remove the cubie from the cube
+					nodeToDelete.removeFromParentNode()
+					self.playBreakSound()
+					self.createExplosion(geometry: nodeToDelete.geometry!,
+										 position: nodeToDelete.presentation.position,
+										 rotation: nodeToDelete.presentation.rotation)
 					
-					// retrieve the key
-					let key = snapshot.key
-					
-					ref.child("cubies/remaining").child(result.node.name!).removeValue()
-					if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
-						// remove the cubie from the cube
-						nodeToDelete.removeFromParentNode()
-						self.playBreakSound()
-						self.createExplosion(geometry: nodeToDelete.geometry!,
-											 position: nodeToDelete.presentation.position,
-											 rotation: nodeToDelete.presentation.rotation)
-						
-						// if cube needs to be reset
-						if self.cubeNode.childNodes.count == 0 {
-							self.resetCube(scatterWinningTiles: true)
-						}
+					// if cube needs to be reset
+					if self.cubeNode.childNodes.count == 0 {
+						self.resetCube(scatterWinningTiles: true)
 					}
-					
+				}
+				
+				// perform database updates in the background
+				DispatchQueue.global(qos: .background).async {
 					// retrieve the cash value
 					if let cashVal = snapshot.value as? Double {
 						// update user's cash if cash cube
@@ -511,21 +512,21 @@ class GameViewController: UIViewController {
 						
 						ref.child("cubies/deleted").child(result.node.name!).setValue(cashVal)
 					}
-				})
-				
-				// update the user's score
-				ref.child("users").child(userID!).runTransactionBlock { (currentData: MutableData) -> TransactionResult in
-					if var userData = currentData.value as? [String: Any] {
-						userData["score"] = (userData["score"] as? Int)! + 1
-						userData["coins"] = (userData["coins"] as? Int)! + 1
+					
+					// update the user's score
+					ref.child("users").child(userID!).runTransactionBlock { (currentData: MutableData) -> TransactionResult in
+						if var userData = currentData.value as? [String: Any] {
+							userData["score"] = (userData["score"] as? Int)! + 1
+							userData["coins"] = (userData["coins"] as? Int)! + 1
+							
+							currentData.value = userData
+							return TransactionResult.success(withValue: currentData)
+						}
 						
-						currentData.value = userData
 						return TransactionResult.success(withValue: currentData)
 					}
-					
-					return TransactionResult.success(withValue: currentData)
 				}
-			}
+			})
 		}
 	}
 	
