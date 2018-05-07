@@ -15,7 +15,6 @@ import AVFoundation
 var musicPlayer = AVAudioPlayer()
 var breakSoundPlayer = AVAudioPlayer()
 var menuSoundPlayer = AVAudioPlayer()
-
 var musicOn = false
 var breakSoundsOn = true
 var menuSoundsOn = true

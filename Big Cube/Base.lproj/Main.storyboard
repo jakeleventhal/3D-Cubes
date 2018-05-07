@@ -223,17 +223,76 @@
                                     <action selector="dismissMenu:" destination="rRp-Eg-fyu" eventType="touchUpInside" id="URP-o0-HNI"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srP-Wx-3W5">
+                                <rect key="frame" x="126" y="91" width="124" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="So0-tx-aIF">
+                                <rect key="frame" x="22.5" y="149" width="330" height="454"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJC-qR-wJV">
+                                        <rect key="frame" x="56.5" y="164" width="216" height="46"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Menu Sounds: On">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="menuSoundsOption:" destination="6dE-aH-NO8" eventType="touchUpInside" id="XOg-Gq-0em"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LKn-QK-lEd">
+                                        <rect key="frame" x="103" y="36" width="123" height="46"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Music: On">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="musicOption:" destination="6dE-aH-NO8" eventType="touchUpInside" id="96o-mQ-9Sr"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k6X-I7-raj">
+                                        <rect key="frame" x="57" y="100" width="216" height="46"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Break Sounds: On">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="breakSoundsOption:" destination="6dE-aH-NO8" eventType="touchUpInside" id="QWQ-hb-reL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="WJC-qR-wJV" firstAttribute="top" secondItem="k6X-I7-raj" secondAttribute="bottom" constant="18" id="0vC-zN-KGy"/>
+                                    <constraint firstItem="LKn-QK-lEd" firstAttribute="top" secondItem="So0-tx-aIF" secondAttribute="top" constant="36" id="1Ba-zp-74X"/>
+                                    <constraint firstAttribute="width" constant="330" id="Mkr-la-qOa"/>
+                                    <constraint firstItem="k6X-I7-raj" firstAttribute="top" secondItem="LKn-QK-lEd" secondAttribute="bottom" constant="18" id="QJy-pu-kJW"/>
+                                    <constraint firstAttribute="height" constant="454" id="Wbj-AC-xgS"/>
+                                    <constraint firstItem="WJC-qR-wJV" firstAttribute="centerX" secondItem="So0-tx-aIF" secondAttribute="centerX" id="fWB-tF-tWO"/>
+                                    <constraint firstItem="LKn-QK-lEd" firstAttribute="centerX" secondItem="So0-tx-aIF" secondAttribute="centerX" id="iYG-xh-a1g"/>
+                                    <constraint firstItem="k6X-I7-raj" firstAttribute="centerX" secondItem="So0-tx-aIF" secondAttribute="centerX" id="rvE-BF-QFY"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="srP-Wx-3W5" firstAttribute="top" secondItem="tdd-ln-oxK" secondAttribute="bottom" constant="10" id="9V4-yA-PCn"/>
+                            <constraint firstItem="srP-Wx-3W5" firstAttribute="centerX" secondItem="JKP-wX-RAl" secondAttribute="centerX" id="APj-sM-g1l"/>
                             <constraint firstItem="tdd-ln-oxK" firstAttribute="top" secondItem="JKP-wX-RAl" secondAttribute="top" constant="23" id="DtZ-ca-Ucu"/>
+                            <constraint firstItem="So0-tx-aIF" firstAttribute="centerX" secondItem="JKP-wX-RAl" secondAttribute="centerX" id="Q7J-Az-clE"/>
                             <constraint firstItem="tdd-ln-oxK" firstAttribute="leading" secondItem="JKP-wX-RAl" secondAttribute="leading" constant="13" id="iPD-1u-isq"/>
+                            <constraint firstItem="So0-tx-aIF" firstAttribute="top" secondItem="srP-Wx-3W5" secondAttribute="bottom" constant="16" id="vPb-un-1ZI"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="slO-V8-p9S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1962" y="456"/>
+            <point key="canvasLocation" x="1960.8" y="455.62218890554726"/>
         </scene>
         <!--Friends View Controller-->
         <scene sceneID="rjI-MX-xKB">

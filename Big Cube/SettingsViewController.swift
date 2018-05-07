@@ -20,6 +20,15 @@ class SettingsViewController: UIViewController {
 		self.dismiss(animated: true, completion: nil)
 	}
 	
+	@IBAction func musicOption(_ sender: Any) {
+	}
+	
+	@IBAction func breakSoundsOption(_ sender: Any) {
+	}
+	
+	@IBAction func menuSoundsOption(_ sender: Any) {
+	}
+	
 	override var prefersStatusBarHidden: Bool {
 		return true
 	}
