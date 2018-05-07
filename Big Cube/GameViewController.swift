@@ -72,7 +72,6 @@ class GameViewController: UIViewController {
 		// show statistics such as fps and timing information
 		scnView.showsStatistics = false
 		
-		
 		// add menu button to the screen
 		addMenuButton()
 		
@@ -87,8 +86,6 @@ class GameViewController: UIViewController {
 		// add a zoom gesture recognizer
 		let zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
 		scnView.addGestureRecognizer(zoomGesture)
-		
-		retrieveCurrentState()
 		
 		// add listener for updates
 		ref.child("cubies/remaining").observe(.childRemoved, with: { (snapshot) in
@@ -110,6 +107,11 @@ class GameViewController: UIViewController {
 				}
 			}
 		})
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		// update the view
+		retrieveCurrentState()
 	}
 	
 	func addMenuButton() {
