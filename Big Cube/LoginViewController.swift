@@ -11,13 +11,12 @@ import Firebase
 import FBSDKLoginKit
 import AVFoundation
 
-@available(iOS 11.0, *)
+// set up variable for playing the background music
+var backgroundMusicPlayer = AVAudioPlayer()
+
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 	
 	@IBOutlet weak var facebookLoginButton: FBSDKLoginButton!
-	
-	// set up variable for playing the background music
-	var backgroundMusicPlayer = AVAudioPlayer()
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +26,38 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 		
 		// start the background music
 		playBackgroundMusic()
+		
+		// handle settings
+		handleSettings()
     }
+	
+	func handleSettings() {
+		let defaults = UserDefaults.standard
+		
+		let settingsInitialized = defaults.bool(forKey: "settingsInitialized")
+		if settingsInitialized {
+			// if background music is supposed to be off
+			if !(defaults.value(forKey: "musicOn") as! Bool) {
+				backgroundMusicPlayer.volume = 0
+			}
+			
+			// if break sounds are supposed to be off
+			if !(defaults.value(forKey: "breakSoundsOn") as! Bool) {
+				breakSoundPlayer.volume = 0
+			}
+			
+			// if menu sounds are supposed to be off
+			if !(defaults.value(forKey: "menuSoundsOn") as! Bool) {
+				menuSoundPlayer.volume = 0
+			}
+		} else {
+			// initialize settings
+			defaults.set(true, forKey: "settingsInitialized")
+			defaults.set(true, forKey: "musicOn")
+			defaults.set(true, forKey: "breakSoundsOn")
+			defaults.set(true, forKey: "menuSoundsOn")
+		}
+	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		// skip the login screen if the user is already logged in
@@ -95,10 +125,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 			try AVAudioSession.sharedInstance().setActive(true)
 			
 			// play the background music
-			try self.backgroundMusicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
-			self.backgroundMusicPlayer.numberOfLoops = -1
-			self.backgroundMusicPlayer.prepareToPlay()
-			self.backgroundMusicPlayer.play()
+			try backgroundMusicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
+			backgroundMusicPlayer.numberOfLoops = -1
+			backgroundMusicPlayer.prepareToPlay()
+			backgroundMusicPlayer.play()
 		} catch {
 			print(error)
 		}

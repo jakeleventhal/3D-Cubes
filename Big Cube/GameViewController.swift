@@ -18,6 +18,9 @@ import FBSDKCoreKit
 var ref: DatabaseReference = Database.database().reference()
 let userID: String! = Auth.auth().currentUser!.uid
 
+// set up variables for the break sound
+var breakSoundPlayer = AVAudioPlayer()
+
 class GameViewController: UIViewController {
 	// configuration
 	let cubiesPerFace: Double = 100
@@ -28,9 +31,6 @@ class GameViewController: UIViewController {
 	var cameraNode: SCNNode!
 	var cubeNode: SCNNode!
 	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
-	
-	// set up variables for the break sound
-	var breakSoundPlayer = AVAudioPlayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -550,9 +550,9 @@ class GameViewController: UIViewController {
 				try AVAudioSession.sharedInstance().setActive(true)
 				
 				// play the sound
-				try self.breakSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
-				self.breakSoundPlayer.prepareToPlay()
-				self.breakSoundPlayer.play()
+				try breakSoundPlayer = AVAudioPlayer(contentsOf: breakSound as URL)
+				breakSoundPlayer.prepareToPlay()
+				breakSoundPlayer.play()
 			} catch {
 				print(error)
 			}
