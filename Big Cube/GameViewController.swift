@@ -18,7 +18,6 @@ import FBSDKCoreKit
 var ref: DatabaseReference = Database.database().reference()
 let userID: String! = Auth.auth().currentUser!.uid
 
-@available(iOS 11.0, *)
 class GameViewController: UIViewController {
 	// configuration
 	let cubiesPerFace: Double = 100
@@ -43,8 +42,10 @@ class GameViewController: UIViewController {
 		cameraNode = SCNNode()
 		cameraNode.camera = SCNCamera()
 		cameraNode.name = "camera"
-		self.cameraNode!.camera!.fieldOfView = 179.39
 		scene.rootNode.addChildNode(cameraNode)
+		if #available(iOS 11.0, *) {
+			self.cameraNode!.camera!.fieldOfView = 179.39
+		}
 		
 		// place the camera
 		cameraNode.position = SCNVector3(x: 0, y: 0, z: 32)
@@ -84,8 +85,10 @@ class GameViewController: UIViewController {
 		scnView.addGestureRecognizer(panGesture)
 		
 		// add a zoom gesture recognizer
-		let zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
-		scnView.addGestureRecognizer(zoomGesture)
+		if #available(iOS 11.0, *) {
+			let zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+			scnView.addGestureRecognizer(zoomGesture)
+		}
 		
 		// add listener for updates
 		ref.child("cubies/remaining").observe(.childRemoved, with: { (snapshot) in
@@ -151,11 +154,14 @@ class GameViewController: UIViewController {
 			}
 			
 			// fly in when finished
-			self.flyIn()
+			if #available(iOS 11.0, *) {
+				self.flyIn()
+			}
 		})
 	}
 	
 	// fly in to the cube from far away
+	@available(iOS 11.0, *)
 	func flyIn() {
 		// perform the action in a different thread
 		DispatchQueue.global(qos: .background).async {
@@ -185,6 +191,7 @@ class GameViewController: UIViewController {
 	}
 	
 	// a function to handle pinching
+	@available(iOS 11.0, *)
 	@objc func handlePinch(_ gestureRecognizer: UIPinchGestureRecognizer) {
 		// get the scale of the gesture
 		let scale = gestureRecognizer.velocity
