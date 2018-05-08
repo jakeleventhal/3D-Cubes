@@ -95,7 +95,7 @@ class GameViewController: UIViewController {
 				
 				// reset the cube if necessary
 				if self.cubeNode.childNodes.count == 0 {
-					self.resetCube(scatterWinningTiles: false)
+					self.resetCube(isTapper: false)
 				}
 			}
 		})
@@ -186,7 +186,7 @@ class GameViewController: UIViewController {
 					nodeToDelete.removeFromParentNode()
 					
 					if self.cubeNode.childNodes.count == 0 {
-						self.resetCube(scatterWinningTiles: false)
+						self.resetCube(isTapper: false)
 					}
 				}
 			}
@@ -430,7 +430,7 @@ class GameViewController: UIViewController {
 	}
 	
 	// reset the cube
-	func resetCube(scatterWinningTiles: Bool) {
+	func resetCube(isTapper: Bool) {
 		// highlight the cube
 		if let material = scene.rootNode.childNode(withName: "base", recursively: true)?.geometry?.firstMaterial {
 			// highlight it
@@ -449,35 +449,34 @@ class GameViewController: UIViewController {
 				self.getNextColor()
 				self.cubeNode.geometry?.firstMaterial?.diffuse.contents = self.colors[self.nextColor]
 				self.initializeFaces(cubieColor: self.colors[self.currentColor]!)
-				let cubiesPerRow = Int(sqrt(self.cubiesPerFace))-1
+				self.retrieveCurrentState()
 				
-				var cubieNames: [String] = []
-				
-				// add the cubies to the database
-				for face in self.faceNames {
-					for i in 0...cubiesPerRow {
-						for j in 0...cubiesPerRow {
-							let cubieName = face + " " + String(i) + ", " + String(j)
-							// add each cubie name to the list of all names
-							cubieNames.append(cubieName)
-							if (scatterWinningTiles) {
-								ref.child("cubies/remaining").child(cubieName).setValue(0)
+				// update database if tapped the last tile
+				if isTapper {
+					let cubiesPerRow = Int(sqrt(self.cubiesPerFace))-1
+					var cubieNames: [String] = []
+					
+					// add the cubies to the database
+					for face in self.faceNames {
+						for i in 0...cubiesPerRow {
+							for j in 0...cubiesPerRow {
+								let cubieName = face + " " + String(i) + ", " + String(j)
+								// add each cubie name to the list of all names
+								cubieNames.append(cubieName)
+								if (isTapper) {
+									ref.child("cubies/remaining").child(cubieName).setValue(0)
+								}
 							}
 						}
 					}
-				}
-				ref.child("cubies/deleted").removeValue()
-				
-				// if scatter should occur
-				if (scatterWinningTiles) {
+					
+					ref.child("cubies/deleted").removeValue()
 					self.scatterWinningTiles(cubieNames: cubieNames)
+					ref.child("currentColor").setValue(self.currentColor)
 				}
-				
-				ref.child("currentColor").setValue(self.currentColor)
 			}
 			
 			material.emission.contents = UIColor.white
-			
 			SCNTransaction.commit()
 		}
 		
@@ -547,7 +546,7 @@ class GameViewController: UIViewController {
 					
 					// if cube needs to be reset
 					if self.cubeNode.childNodes.count == 0 {
-						self.resetCube(scatterWinningTiles: true)
+						self.resetCube(isTapper: true)
 					}
 				}
 				
