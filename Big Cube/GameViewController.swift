@@ -292,7 +292,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfColor(color: color)
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 5.6, z: 4.5 - Float(j))
 				cubieNode.name = "top " + String(i) + ", " + String(j)
 				self.cubeNode.addChildNode(cubieNode)
@@ -306,7 +306,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfColor(color: color)
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: -5.6, z: 4.5 - Float(j))
 				cubieNode.name = "bottom " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -320,7 +320,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfColor(color: color)
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: 5.6)
 				cubieNode.name = "front " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -334,7 +334,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfColor(color: color)
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: -5.6)
 				cubieNode.name = "back " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -348,7 +348,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfColor(color: color)
 				cubieNode.position = SCNVector3(x: -5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
 				cubieNode.name = "left " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -362,7 +362,7 @@ class GameViewController: UIViewController {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfColor(color: color)
 				cubieNode.position = SCNVector3(x: 5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
 				cubieNode.name = "right " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -387,14 +387,22 @@ class GameViewController: UIViewController {
 		// Release any cached data, images, etc that aren't in use.
 	}
 	
-	// get a random shade of blue
-	func getRandomShadeOfBlue() -> UIColor {
-		let rand = CGFloat(arc4random())
-		let max = CGFloat(UINT32_MAX)
-		let diff = CGFloat(abs(0.86 - 1))
+	// get a random shade of a color
+	func getRandomShadeOfColor(color: UIColor) -> UIColor {
+		// generate a random percent change
+		var percentChange = CGFloat(arc4random()) / CGFloat(UINT32_MAX) * 12.5
+		if drand48() > 0.5 {
+			percentChange *= -1
+		}
 		
-		let randomBlueValue = rand / max * diff + 0.86
-		return UIColor(red: 0, green: 0, blue: randomBlueValue, alpha: 1)
+		// update RGB values
+		let ciColor: CIColor = CIColor(color: color)
+		let red = max(min(ciColor.red + percentChange/100, 1.0), 0)
+		let blue = max(min(ciColor.blue + percentChange/100, 1.0), 0)
+		let green = max(min(ciColor.green + percentChange/100, 1.0), 0)
+		
+		// return the new color
+		return UIColor(red: red, green: green, blue: blue, alpha: 1)
 	}
 	
 	// reset the cube
