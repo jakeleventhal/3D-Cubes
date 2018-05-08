@@ -154,6 +154,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 			// play the background music
 			try musicPlayer = AVAudioPlayer(contentsOf: backgroundMusic as URL)
 			musicPlayer.numberOfLoops = -1
+			if !musicOn {
+				musicPlayer.volume = 0
+			}
 			musicPlayer.prepareToPlay()
 			musicPlayer.play()
 		} catch {

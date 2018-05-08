@@ -27,6 +27,7 @@ class GameViewController: UIViewController {
 	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
 	var cameraNode: SCNNode!
 	var cubeNode: SCNNode!
+	var rendered = false
 	let faceNames = ["front", "back", "left", "right", "top", "bottom"]
 	let colorNames = ["blue", "red", "green", "pink"]
 	let colors: [String: UIColor] = ["blue": .blue, "red": .red, "green": .green, "pink": .magenta]
@@ -50,24 +51,6 @@ class GameViewController: UIViewController {
 		
 		// place the camera
 		cameraNode.position = SCNVector3(x: 0, y: 0, z: 32)
-		
-		// create the cube
-		ref.child("currentColor").observeSingleEvent(of: .value) { (snapshot) in
-			// retrieve the cube colors
-			self.currentColor = snapshot.value as? String
-			self.getNextColor()
-			
-			// create the base cube
-			let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0.0)
-			self.cubeNode = SCNNode(geometry: cube)
-			self.cubeNode.geometry?.firstMaterial?.diffuse.contents = self.colors[self.nextColor]
-			self.cubeNode.position = SCNVector3(x: 0, y: 0, z: 0)
-			self.cubeNode.name = "base"
-			self.scene.rootNode.addChildNode(self.cubeNode)
-			
-			// add the faces to the cube
-			self.initializeFaces(cubieColor: self.colors[self.currentColor]!)
-		}
 		
 		// add lights to the scene
 		addLights()
@@ -116,6 +99,52 @@ class GameViewController: UIViewController {
 				}
 			}
 		})
+		
+		ref.child(".info/connected").observe(.value, with: { (snapshot) in
+			if let connected = snapshot.value as? Bool, connected {
+				print("Connected")
+				
+				// zoom out
+				if #available(iOS 11.0, *) {
+					self.cameraNode!.camera!.fieldOfView = 179.39
+				}
+				
+				// remove old cube if it already exists
+				if self.rendered {
+					self.cubeNode.removeFromParentNode()
+				}
+				
+				// render the new cube
+				self.createCube()
+				
+				// set the rendered flag to true
+				self.rendered = true
+			} else {
+				print("Not connected")
+			}
+		})
+	}
+	
+	func createCube() {
+		ref.child("currentColor").observeSingleEvent(of: .value) { (snapshot) in
+			// retrieve the cube colors
+			self.currentColor = snapshot.value as? String
+			self.getNextColor()
+			
+			// create the base cube
+			let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0.0)
+			self.cubeNode = SCNNode(geometry: cube)
+			self.cubeNode.geometry?.firstMaterial?.diffuse.contents = self.colors[self.nextColor]
+			self.cubeNode.position = SCNVector3(x: 0, y: 0, z: 0)
+			self.cubeNode.name = "base"
+			self.scene.rootNode.addChildNode(self.cubeNode)
+			
+			// add the faces to the cube
+			self.initializeFaces(cubieColor: self.colors[self.currentColor]!)
+			
+			// update the state of the cube
+			self.retrieveCurrentState()
+		}
 	}
 	
 	func getNextColor() {
@@ -125,11 +154,6 @@ class GameViewController: UIViewController {
 		}
 		
 		nextColor = colorNames[nextColorIndex]
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		// update the view
-		retrieveCurrentState()
 	}
 	
 	func addMenuButton() {
