@@ -34,12 +34,9 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdi-Qh-Fx0" customClass="FBSDKLoginButton">
-                                <rect key="frame" x="65" y="273" width="245" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="245" id="nZX-FH-7lf"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdi-Qh-Fx0" customClass="FBSDKLoginButton">
+                                <rect key="frame" x="123.5" y="273" width="128" height="34"/>
+                                <state key="normal" title="Facebook Login"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -236,7 +233,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJC-qR-wJV">
                                         <rect key="frame" x="32" y="164" width="266" height="46"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="266" id="QOv-DJ-JlR"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="266" id="QOv-DJ-JlR"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -250,7 +247,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LKn-QK-lEd">
                                         <rect key="frame" x="79.5" y="36" width="170" height="46"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="170" id="OuL-5k-oKG"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="OuL-5k-oKG"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -264,7 +261,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k6X-I7-raj">
                                         <rect key="frame" x="37" y="100" width="256" height="46"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="256" id="icT-hW-Eoe"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="256" id="icT-hW-Eoe"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -91,7 +91,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 	override func viewDidAppear(_ animated: Bool) {
 		// skip the login screen if the user is already logged in
 		if FBSDKAccessToken.current() != nil {
-			self.perform(#selector(navigateToGame), with: nil, afterDelay: 0.01)
+			self.perform(#selector(navigateToGame), with: nil, afterDelay: 0.05)
 		}
 	}
 	
@@ -118,8 +118,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 					print("Error logging in Facebook user to Firebase:", error)
 					return
 				}
-				
-				print("Successfully logged in Facebook user:", result ?? "")
 				
 				// add the user to the database if not already present
 				let ref: DatabaseReference = Database.database().reference()
