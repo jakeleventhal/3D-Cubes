@@ -27,7 +27,11 @@ class GameViewController: UIViewController {
 	var scene: SCNScene = SCNScene(named: "art.scnassets/MainScene.scn")!
 	var cameraNode: SCNNode!
 	var cubeNode: SCNNode!
-	var faceNames = ["front", "back", "left", "right", "top", "bottom"]
+	let faceNames = ["front", "back", "left", "right", "top", "bottom"]
+	let colorNames = ["blue", "red", "green", "pink"]
+	let colors: [String: UIColor] = ["blue": .blue, "red": .red, "green": .green, "pink": .magenta]
+	var currentColor: String!
+	var nextColor: String!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -47,16 +51,23 @@ class GameViewController: UIViewController {
 		// place the camera
 		cameraNode.position = SCNVector3(x: 0, y: 0, z: 32)
 		
-		// create the base cube
-		let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0.0)
-		cubeNode = SCNNode(geometry: cube)
-		cubeNode.geometry?.firstMaterial?.diffuse.contents = UIColor.red
-		cubeNode.position = SCNVector3(x: 0, y: 0, z: 0)
-		cubeNode.name = "base"
-		scene.rootNode.addChildNode(cubeNode)
-		
-		// add the faces to the cube
-		initializeFaces()
+		// create the cube
+		ref.child("currentColor").observeSingleEvent(of: .value) { (snapshot) in
+			// retrieve the cube colors
+			self.currentColor = snapshot.value as? String
+			self.getNextColor()
+			
+			// create the base cube
+			let cube = SCNBox(width: 10, height: 10, length: 10, chamferRadius: 0.0)
+			self.cubeNode = SCNNode(geometry: cube)
+			self.cubeNode.geometry?.firstMaterial?.diffuse.contents = self.colors[self.nextColor]
+			self.cubeNode.position = SCNVector3(x: 0, y: 0, z: 0)
+			self.cubeNode.name = "base"
+			self.scene.rootNode.addChildNode(self.cubeNode)
+			
+			// add the faces to the cube
+			self.initializeFaces(cubieColor: self.colors[self.currentColor]!)
+		}
 		
 		// add lights to the scene
 		addLights()
@@ -93,20 +104,27 @@ class GameViewController: UIViewController {
 			let key = snapshot.key
 			
 			if let nodeToDelete = self.cubeNode.childNode(withName: key, recursively: true) {
+				// remove the cubie from the cube
+				nodeToDelete.removeFromParentNode()
+				self.createExplosion(geometry: nodeToDelete.geometry!,
+									 position: nodeToDelete.presentation.position,
+									 rotation: nodeToDelete.presentation.rotation)
+				
 				// reset the cube if necessary
-				if self.cubeNode.childNodes.count == 1 {
+				if self.cubeNode.childNodes.count == 0 {
 					self.resetCube(scatterWinningTiles: false)
-				}
-					// remove the node from the cube
-				else {
-					nodeToDelete.removeFromParentNode()
-					
-					self.createExplosion(geometry: nodeToDelete.geometry!,
-										 position: nodeToDelete.presentation.position,
-										 rotation: nodeToDelete.presentation.rotation)
 				}
 			}
 		})
+	}
+	
+	func getNextColor() {
+		var nextColorIndex = colorNames.index(of: currentColor)! + 1
+		if nextColorIndex == colorNames.count {
+			nextColorIndex = 0
+		}
+		
+		nextColor = colorNames[nextColorIndex]
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -141,11 +159,10 @@ class GameViewController: UIViewController {
 			// delete each cubie
 			for cubie in deletedCubies {
 				if let nodeToDelete = self.cubeNode.childNode(withName: cubie, recursively: true) {
-					if self.cubeNode.childNodes.count == 1 {
+					nodeToDelete.removeFromParentNode()
+					
+					if self.cubeNode.childNodes.count == 0 {
 						self.resetCube(scatterWinningTiles: false)
-					}
-					else {
-						nodeToDelete.removeFromParentNode()
 					}
 				}
 			}
@@ -259,23 +276,23 @@ class GameViewController: UIViewController {
 		}
 	}
 	
-	func initializeFaces() {
+	func initializeFaces(cubieColor: UIColor) {
 		let cubiesPerRow = Int(sqrt(cubiesPerFace))-1
-		addTopCubies(size: cubiesPerRow)
-		addBottomCubies(size: cubiesPerRow)
-		addFrontCubies(size: cubiesPerRow)
-		addBackCubies(size: cubiesPerRow)
-		addLeftCubies(size: cubiesPerRow)
-		addRightCubies(size: cubiesPerRow)
+		addTopCubies(size: cubiesPerRow, color: cubieColor)
+		addBottomCubies(size: cubiesPerRow, color: cubieColor)
+		addFrontCubies(size: cubiesPerRow, color: cubieColor)
+		addBackCubies(size: cubiesPerRow, color: cubieColor)
+		addLeftCubies(size: cubiesPerRow, color: cubieColor)
+		addRightCubies(size: cubiesPerRow, color: cubieColor)
 	}
 	
 	// add cubies to the top face
-	func addTopCubies(size: Int) {
+	func addTopCubies(size: Int, color: UIColor) {
 		for i in 0...size {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 5.6, z: 4.5 - Float(j))
 				cubieNode.name = "top " + String(i) + ", " + String(j)
 				self.cubeNode.addChildNode(cubieNode)
@@ -284,12 +301,12 @@ class GameViewController: UIViewController {
 	}
 	
 	// add cubies to the bottom face
-	func addBottomCubies(size: Int) {
+	func addBottomCubies(size: Int, color: UIColor) {
 		for i in 0...size {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: -5.6, z: 4.5 - Float(j))
 				cubieNode.name = "bottom " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -298,12 +315,12 @@ class GameViewController: UIViewController {
 	}
 	
 	// add cubies to the front face
-	func addFrontCubies(size: Int) {
+	func addFrontCubies(size: Int, color: UIColor) {
 		for i in 0...size {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: 5.6)
 				cubieNode.name = "front " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -312,12 +329,12 @@ class GameViewController: UIViewController {
 	}
 	
 	// add cubies to the back face
-	func addBackCubies(size: Int) {
+	func addBackCubies(size: Int, color: UIColor) {
 		for i in 0...size {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
 				cubieNode.position = SCNVector3(x: 4.5 - Float(i), y: 4.5 - Float(j), z: -5.6)
 				cubieNode.name = "back " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -326,12 +343,12 @@ class GameViewController: UIViewController {
 	}
 	
 	// add cubies to the left face
-	func addLeftCubies(size: Int) {
+	func addLeftCubies(size: Int, color: UIColor) {
 		for i in 0...size {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
 				cubieNode.position = SCNVector3(x: -5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
 				cubieNode.name = "left " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -340,12 +357,12 @@ class GameViewController: UIViewController {
 	}
 	
 	// add cubies to the right face
-	func addRightCubies(size: Int) {
+	func addRightCubies(size: Int, color: UIColor) {
 		for i in 0...size {
 			for j in 0...size {
 				let cubie = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.0)
 				let cubieNode = SCNNode(geometry: cubie)
-				cubieNode.geometry?.firstMaterial?.diffuse.contents = getRandomShadeOfBlue()
+				cubieNode.geometry?.firstMaterial?.diffuse.contents = color
 				cubieNode.position = SCNVector3(x: 5.6, y: 4.5 - Float(i), z: 4.5 - Float(j))
 				cubieNode.name = "right " + String(i) + ", " + String(j)
 				cubeNode.addChildNode(cubieNode)
@@ -396,7 +413,10 @@ class GameViewController: UIViewController {
 				material.emission.contents = UIColor.black
 				
 				SCNTransaction.commit()
-				self.initializeFaces()
+				self.currentColor = self.nextColor
+				self.getNextColor()
+				self.cubeNode.geometry?.firstMaterial?.diffuse.contents = self.colors[self.nextColor]
+				self.initializeFaces(cubieColor: self.colors[self.currentColor]!)
 				let cubiesPerRow = Int(sqrt(self.cubiesPerFace))-1
 				
 				var cubieNames: [String] = []
@@ -420,6 +440,8 @@ class GameViewController: UIViewController {
 				if (scatterWinningTiles) {
 					self.scatterWinningTiles(cubieNames: cubieNames)
 				}
+				
+				ref.child("currentColor").setValue(self.currentColor)
 			}
 			
 			material.emission.contents = UIColor.white

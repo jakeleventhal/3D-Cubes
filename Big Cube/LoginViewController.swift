@@ -91,7 +91,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 	override func viewDidAppear(_ animated: Bool) {
 		// skip the login screen if the user is already logged in
 		if FBSDKAccessToken.current() != nil {
-			self.perform(#selector(navigateToGame), with: nil, afterDelay: 0.05)
+			self.perform(#selector(navigateToGame), with: nil, afterDelay: 0.01)
 		}
 	}
 	
